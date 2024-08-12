@@ -7,6 +7,14 @@ public class Move : MonoBehaviour
 
     public float Speed = 5f;
     public Camera mainCamera; // 메인 카메라를 참조하기 위한 변수
+    public float jumpForce = 3f; // 점프에 사용할 힘
+    private Rigidbody rb;
+
+    void Start()
+    {
+        // Rigidbody 컴포넌트를 가져오기
+        rb = GetComponent<Rigidbody>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -29,6 +37,12 @@ public class Move : MonoBehaviour
             Vector3 direction = (targetPosition - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime);
+        }
+
+        // 스페이스 바를 눌렀을 때 점프
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 }
