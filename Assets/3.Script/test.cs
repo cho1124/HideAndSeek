@@ -39,9 +39,5 @@ public class test : MonoBehaviour
             MeshCollider meshcol = gameObject.AddComponent<MeshCollider>();
             meshcol.sharedMesh = meshCollider.sharedMesh;
         }
-
-
     }
-
-    
 }

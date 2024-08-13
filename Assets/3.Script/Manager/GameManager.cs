@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform seeker_spawnpoint;
     [SerializeField] private Transform hider_spawnpoint;
 
-
     private HideAndSeekRoomManager roomManager;
 
     private bool is_gameover = false;
@@ -82,8 +81,6 @@ public class GameManager : MonoBehaviour
         }
 
         //Debug.LogError(NetworkServer.spawned[0].netId);
-
-        
     }
 
 
