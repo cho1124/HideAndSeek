@@ -4,7 +4,7 @@ using UnityEngine;
 using Mirror;
 
 public class GamePlayer : NetworkBehaviour
-{
+{ 
 
     public static string nickName;
     public static string ip;
