@@ -129,6 +129,7 @@ namespace Mirror
                 pending.conn = conn;
                 pending.roomPlayer = roomPlayer;
                 pendingPlayers.Add(pending); //카운트 받아오기
+                Debug.Log(pendingPlayers.Count);
                 return;
             }
 
@@ -141,7 +142,7 @@ namespace Mirror
                     ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                     : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
-                gamePlayer.AddComponent<NetworkIdentity>();
+               // gamePlayer.AddComponent<NetworkIdentity>();
                 
 
 
