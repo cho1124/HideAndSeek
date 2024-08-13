@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     [Header("흐름처리")]
-    [SerializeField] private float timer = 0f;
+    [SerializeField] private float timer = 180f;
 
     [Header("변동 가능 카운트")]
     [SerializeField] private int seeker_count = 1;
 
     [Header("인 게임 생존 카운트")]
-    [SerializeField] private int seeker_survivedCount;
-    [SerializeField] private int hider_survivedCount;
+    [SerializeField] private int seeker_survived_count;
+    [SerializeField] private int hider_survived_count;
     
     [Header("각 플레이어 리스트")]
     [SerializeField] private List<Player> player_seek;
@@ -115,4 +115,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Morph(GameObject player, int prefab_num)
+    {
+        GameObject player_body = player.GetComponent<Player_Control>().player_body;
+        Destroy(player_body);
+        player_body = Instantiate(object_prefab[prefab_num]);
+        player_body.transform.SetParent(player.transform);
+        player_body.transform.localPosition = Vector3.zero;
+        player_body.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+    }
 }
