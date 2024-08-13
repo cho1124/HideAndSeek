@@ -13,8 +13,6 @@ public class ObjectShuffler : MonoBehaviour
     -Ground 태그를 가진 콜라이더 이외 다른 콜라이더와 닿지 않게 배치
     */
 
-
-
     public GameObject[] objects; // 인스펙터에서 오브젝트를 넣을 수 있도록 배열을 선언
 
     void Start()
