@@ -2560,9 +2560,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919e78f0df580094fa268dc7e0b93397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 5
+  seeker_count: 1
+  seeker_survivedCount: 0
+  hider_survivedCount: 0
   player_seek: []
   player_hide: []
+  player_prefab: {fileID: 0}
+  object_prefab: []
+  seeker_spawnpoint: {fileID: 0}
+  hider_spawnpoint: {fileID: 0}
 --- !u!4 &2021628573
 Transform:
   m_ObjectHideFlags: 0

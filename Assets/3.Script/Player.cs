@@ -16,9 +16,6 @@ public class Player : MonoBehaviour
         
     }
 
-
-
-
     public void TakeDamage(int damage)
     {
         current_hp -= damage;
