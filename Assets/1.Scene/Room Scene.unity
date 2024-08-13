@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 164792478}
   - component: {fileID: 164792480}
   - component: {fileID: 164792479}
+  - component: {fileID: 164792481}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -198,6 +199,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164792477}
   m_CullTransparentMesh: 1
+--- !u!114 &164792481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164792477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 164792479}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1421026488}
+        m_TargetAssemblyTypeName: RoomScript, Assembly-CSharp
+        m_MethodName: OnReturnButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &281563438
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +313,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\uB2E4\uB978 \uD50C\uB808\uC774\uC5B4\uB97C \uAE30\uB2E4\uB9AC\uB294 \uC911...\n\uC900\uBE44
-    \uC644\uB8CC  1/8"
+    \uC644\uB8CC  1/5"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2d01559bdf81964d8e229c88fcb0d2d, type: 2}
   m_sharedMaterial: {fileID: -2651450504027821061, guid: a2d01559bdf81964d8e229c88fcb0d2d, type: 2}
@@ -364,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7281bc2496f55494e96c401593581f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   showRoomGUI: 1
@@ -810,6 +867,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1421026487}
+  - component: {fileID: 1421026488}
+  - component: {fileID: 1421026489}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged
@@ -832,6 +891,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1421026488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421026486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece72756e2eea7b4fa8977a734b9eb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &1421026489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421026486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1178933455
+  _assetId: 0
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &1499692837
 GameObject:
   m_ObjectHideFlags: 0
