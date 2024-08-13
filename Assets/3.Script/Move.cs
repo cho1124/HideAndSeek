@@ -36,7 +36,7 @@ public class Move : MonoBehaviour
             // 플레이어가 마우스를 바라보도록 회전 (XZ 평면만)
             Vector3 direction = (targetPosition - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime*1/2);
         }
 
         // 스페이스 바를 눌렀을 때 점프
