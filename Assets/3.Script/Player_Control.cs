@@ -11,6 +11,7 @@ public class Player_Control : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_body;
+    [SerializeField] private GameObject player_prefab;
 
     float input_cursor_h = 0f;
     float input_cursor_v = 0f;
@@ -28,6 +29,8 @@ public class Player_Control : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
+        player_body = Instantiate(player_prefab);
+        player_body.transform.SetParent(gameObject.transform);
     }
 
     void Update()
@@ -86,7 +89,19 @@ public class Player_Control : MonoBehaviour
             Debug.Log($"{ray_hits[i].collider.gameObject.name}");
             if (ray_hits[i].collider.CompareTag("Changeable"))
             {
+                Destroy(player_body);
 
+                player_body = Instantiate(ray_hits[i].collider.gameObject);
+
+                MeshRenderer player_body_mesh_renderer = player_body.GetComponent<MeshRenderer>();
+                MeshFilter player_body_mesh_filter = player_body.GetComponent<MeshFilter>();
+                player_body_mesh_renderer = ray_hits[i].collider.gameObject.GetComponent<MeshRenderer>();
+                player_body_mesh_filter = ray_hits[i].collider.gameObject.GetComponent<MeshFilter>();
+                player_body.transform.SetParent(gameObject.transform);
+                player_body.transform.localPosition = transform.up;
+                player_body.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+                break;
             }
         }
     }
