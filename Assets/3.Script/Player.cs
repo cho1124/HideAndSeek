@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int max_hp;
-    private int current_hp;
-    public bool isDead = false;
+    private int hp_max;
+    private int hp_current;
+    public bool is_dead = false;
     public bool is_seeker = false;
     
     
     public void Initialize(int max_hp, bool is_seeker)
     {
-        current_hp = max_hp;
-        
+        hp_current = max_hp;
     }
 
     public void TakeDamage(int damage)
     {
-        current_hp -= damage;
+        hp_current -= damage;
 
-        if (current_hp <= 0)
+        if (hp_current <= 0)
         {
             Die();
         }
@@ -30,7 +29,7 @@ public class Player : MonoBehaviour
     public void Die()
     {
 
-        isDead = true;
+        is_dead = true;
 
         //술래 혹은 술래가 아닌 경우를 게임매니저에서 받아와서 할 것
         //GameManager.instance.

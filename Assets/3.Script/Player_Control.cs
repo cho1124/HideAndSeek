@@ -10,7 +10,7 @@ public class Player_Control : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
-    [SerializeField] private GameObject player_body;
+    public GameObject player_body;
     [SerializeField] private GameObject player_prefab;
 
     float input_cursor_h = 0f;
@@ -45,7 +45,7 @@ public class Player_Control : MonoBehaviour
         // 스페이스 바를 눌렀을 때 점프
         input_jump = Input.GetKeyDown(KeyCode.Space);
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             On_Click();
         }
@@ -87,20 +87,9 @@ public class Player_Control : MonoBehaviour
         for (int i = 0; i < ray_hits.Length; i++)
         {
             Debug.Log($"{ray_hits[i].collider.gameObject.name}");
-            if (ray_hits[i].collider.CompareTag("Changeable"))
+            if (ray_hits[i].collider.CompareTag("Morphable"))
             {
-                Destroy(player_body);
-
-                player_body = Instantiate(ray_hits[i].collider.gameObject);
-
-                MeshRenderer player_body_mesh_renderer = player_body.GetComponent<MeshRenderer>();
-                MeshFilter player_body_mesh_filter = player_body.GetComponent<MeshFilter>();
-                player_body_mesh_renderer = ray_hits[i].collider.gameObject.GetComponent<MeshRenderer>();
-                player_body_mesh_filter = ray_hits[i].collider.gameObject.GetComponent<MeshFilter>();
-                player_body.transform.SetParent(gameObject.transform);
-                player_body.transform.localPosition = transform.up;
-                player_body.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-
+                GameManager.instance.Morph(gameObject, ray_hits[i].collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
                 break;
             }
         }
