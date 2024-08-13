@@ -147,6 +147,26 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
+		public void CameraBackAM0()
+        {
+			CameraObject.Play("CameraBackAM0", 0, 0);
+        }
+
+		public void CameraBackAM1()
+		{
+			CameraObject.Play("CameraBackAM1", 0, 0);
+		}
+
+		public void CameraAM0()
+        {
+			CameraObject.Play("CameraAM0", 0, 0);
+        }
+
+		public void CameraAM1()
+		{
+			CameraObject.Play("CameraAM1", 0, 0);
+		}
+
 		public void Position2(){
 			DisablePlayCampaign();
 			CameraObject.SetFloat("Animate",1);
