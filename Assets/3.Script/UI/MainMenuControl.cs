@@ -55,11 +55,11 @@ public class MainMenuControl : MonoBehaviour
             GamePlayer.nickName = _nickName.text;
             //GamePlayer.ip =
             GamePlayer.isHost = true;
-
+            
 
             var roomManager = HideAndSeekRoomManager.singleton;
+            //roomManager.StartHost();
             roomManager.StartHost();
-
             SceneManager.LoadScene("Room Scene");
         }
         // host ³»¿ë
@@ -91,7 +91,7 @@ public class MainMenuControl : MonoBehaviour
 
             var roomManager = HideAndSeekRoomManager.singleton;
             //
-            roomManager.networkAddress = _ip.text;
+            roomManager.networkAddress = GamePlayer.connectToIp;
             roomManager.StartClient();
             SceneManager.LoadScene("Room Scene");
         }

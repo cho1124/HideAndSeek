@@ -6,7 +6,7 @@ public class RoomScript : NetworkBehaviour
     //var roomManager = HideAndSeekRoomManager.singleton;
     private void Awake()
     {
-        
+        //var roomManager = HideAndSeekRoomManager.singleton;
         //
         //// host
         //if (GamePlayer.isHost)
