@@ -128,7 +128,7 @@ namespace Mirror
                 PendingPlayer pending;
                 pending.conn = conn;
                 pending.roomPlayer = roomPlayer;
-                pendingPlayers.Add(pending);
+                pendingPlayers.Add(pending); //카운트 받아오기
                 return;
             }
 
@@ -140,12 +140,19 @@ namespace Mirror
                 gamePlayer = startPos != null
                     ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                     : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+
+                gamePlayer.AddComponent<NetworkIdentity>();
+                
+
+
+                //게임매니저와 연결
             }
 
             if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
                 return;
 
             // replace room player with game player
+            
             NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
         }
 
