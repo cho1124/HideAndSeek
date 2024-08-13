@@ -21,9 +21,8 @@ public class Player_Control : MonoBehaviour
     bool input_jump = false;
 
     Vector3 velocity_h = Vector3.zero;
-    Vector3 velocity_v = Vector3.zero;
 
-    private bool is_ground = false;
+    private bool is_jumpable = false;
 
     void Start()
     {
@@ -31,6 +30,7 @@ public class Player_Control : MonoBehaviour
         anchor_transform = transform.Find("Root_Anchor");
         player_body = Instantiate(player_prefab);
         player_body.transform.SetParent(gameObject.transform);
+        player_body.transform.position = transform.position + transform.up;
     }
 
     void Update()
@@ -53,7 +53,6 @@ public class Player_Control : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(is_ground);
         Player_Move(input_move_h, input_move_v, input_jump);
         Player_Rotate(input_cursor_h, input_cursor_v);
     }
@@ -62,14 +61,11 @@ public class Player_Control : MonoBehaviour
     {
         Vector3 direction = (transform.right * move_h + transform.forward * move_v).normalized;
         velocity_h = direction * move_speed;
-        if (is_ground && is_jump)
+        if (is_jump)
         {
-            velocity_v = transform.up * jump_speed;
-            is_ground = false;
+            rb.AddForce(transform.up * jump_speed, ForceMode.VelocityChange);
         }
-        else if (is_ground && !is_jump) velocity_v = Vector3.zero;
-        else velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
-        rb.velocity = new Vector3(velocity_h.x, velocity_v.y, velocity_h.z);
+        rb.velocity = new Vector3(velocity_h.x, rb.velocity.y, velocity_h.z);
     }
 
     private void Player_Rotate(float cursor_h, float cursor_v)
@@ -102,9 +98,9 @@ public class Player_Control : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (velocity_v.y < 0f && collision.gameObject.layer == 8 && (collision.transform.position - transform.position).y <= 1f)
+        for(int i = 0; i < collision.contacts.Length; i++)
         {
-            is_ground = true;
+            Debug.Log(collision.contacts[i].point);
         }
     }
 }
