@@ -93,7 +93,7 @@ public class Player_Control : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(anchor_transform.position, anchor_transform.forward * 10f);
+       // Gizmos.DrawRay(anchor_transform.position, anchor_transform.forward * 10f);
     }
 
     private void OnCollisionEnter(Collision collision)

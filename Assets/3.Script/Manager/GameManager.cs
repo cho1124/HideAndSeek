@@ -83,6 +83,9 @@ public class GameManager : MonoBehaviour
 
         //Debug.LogError(NetworkServer.spawned[0].netId);
 
+
+        //Debug.Log(NetworkManager.singleton.spawnPrefabs.Count);
+
         
     }
 
@@ -123,9 +126,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < player_count; i++) //이 부분은 멀티 플레이어에서 유저의 카운트를 받아온 다음에 seeker_count를 뺀 나머지 값으로 계산하라 수 있도록 할 예정
         {
-            Player player = Instantiate(object_prefab[0], spawnPoint).AddComponent<Player>(); //여기서 바꿔야 할 부분, object 프리팹을 난수화
+            //Player player = Instantiate(object_prefab[0], spawnPoint).AddComponent<Player>(); //여기서 바꿔야 할 부분, object 프리팹을 난수화
+            Player player = NetworkManager.singleton.spawnPrefabs[0].AddComponent<Player>();
             player.Initialize(hp, is_seeker);
-            player_hide.Add(player);
+            players.Add(player);
         }
     }
 
