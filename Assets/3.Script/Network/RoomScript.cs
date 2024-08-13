@@ -24,7 +24,7 @@ public class RoomScript : NetworkBehaviour
     {
 
         // 현재 플레이어 수
-        var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>();
+        var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>(); //으ㅜㅇ아ㅏㅇ아ㅓㅓㅜㅁㄴㅇㄴ머ㅜㅇㄴ머ㅑㅏ
         roomPlayersText.text = string.Format($"플레이어 : {curPlayers.Length} / 5");
 
     }

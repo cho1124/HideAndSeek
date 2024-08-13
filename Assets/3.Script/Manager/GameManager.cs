@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance = null;
 
     [Header("흐름처리")]
@@ -31,10 +31,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform seeker_spawnpoint;
     [SerializeField] private Transform hider_spawnpoint;
 
+
+    private HideAndSeekRoomManager roomManager;
+
     private bool is_gameover = false;
 
     //todo: >>>>> 게임이 시작 될 때 술래인 유저는 player_seek, 술래가 아닌 유저는 player_hide에 list add 하고
-    //TODO: 조영준 개천재 모야 무슨말이야 대박인뎅
+    
     //오잉
     //플레이어가 죽을 때마다 List에서 제거
     //리스트가 먼저 0이 된 팀이 패배
@@ -67,9 +70,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
+
         Set_Player(player_seek, seeker_count ,100, true);
-        Set_Player(player_hide, 10 - seeker_count ,5, false); //이 부분을 네트워크에서 받아올 예정
+        Set_Player(player_hide, roomManager.clientIndex - seeker_count ,5, false); //이 부분을 네트워크에서 받아올 예정
         Time.timeScale = 1;
+        
+        foreach(KeyValuePair<uint, NetworkIdentity> dic in NetworkServer.spawned)
+        {
+            Debug.Log("dic netid : " + dic.Key + "dic value : " + dic.Value);
+        }
+
+        //Debug.LogError(NetworkServer.spawned[0].netId);
+
+        
     }
 
 
@@ -109,7 +123,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < player_count; i++) //이 부분은 멀티 플레이어에서 유저의 카운트를 받아온 다음에 seeker_count를 뺀 나머지 값으로 계산하라 수 있도록 할 예정
         {
-            Player player = Instantiate(object_prefab[i], spawnPoint).AddComponent<Player>(); //여기서 바꿔야 할 부분, object 프리팹을 난수화
+            Player player = Instantiate(object_prefab[0], spawnPoint).AddComponent<Player>(); //여기서 바꿔야 할 부분, object 프리팹을 난수화
             player.Initialize(hp, is_seeker);
             player_hide.Add(player);
         }
