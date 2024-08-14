@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mirror.RemoteCalls;
 using UnityEngine;
+using UnityEditor;
 
 namespace Mirror
 {
@@ -1432,6 +1433,7 @@ namespace Mirror
                 {
                     // Debug.Log($"SpawnObjects sceneId:{identity.sceneId:X} name:{identity.gameObject.name}");
                     identity.gameObject.SetActive(true);
+                    
                 }
             }
 

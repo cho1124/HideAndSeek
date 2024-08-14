@@ -10,12 +10,6 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     string nickName;
 
 
-    //private void OnConnectedToServer()
-    //{
-    //    NetworkClient.AddPlayer();
-    //    Debug.Log("Added Player");
-    //}
-
 
     
 
@@ -23,7 +17,6 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     {
         if (GamePlayer.isHost)
         {
-
 
             StopHost();
 
@@ -33,5 +26,6 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             StopClient();
         }
     }
+    
 
 }

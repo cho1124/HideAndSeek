@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
+
 namespace Mirror
 {
     /// <summary>
@@ -73,6 +74,9 @@ namespace Mirror
         [ReadOnly, Tooltip("List of Room Player objects")]
         public HashSet<NetworkRoomPlayer> roomSlots = new HashSet<NetworkRoomPlayer>();
 
+        public List<GameObject> gamePlayer_list;
+
+
         public bool allPlayersReady
         {
             get => _allPlayersReady;
@@ -116,6 +120,8 @@ namespace Mirror
                     Debug.LogError("RoomPlayer prefab must have a NetworkIdentity component.");
                 }
             }
+
+            
         }
 
         void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
@@ -133,16 +139,32 @@ namespace Mirror
                 return;
             }
 
-            GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
+            GameObject gamePlayer;
+
+            gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
+            
             if (gamePlayer == null)
             {
+                //Debug.Log("gamePlayer");
+
                 // get start position from base class
                 Transform startPos = GetStartPosition();
+
+               
+                //startPos.position = new Vector3(0, 5f, 0);
+
                 gamePlayer = startPos != null
                     ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                     : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
-               // gamePlayer.AddComponent<NetworkIdentity>();
+                //Debug.Log(gamePlayer.transform.position);
+
+                gamePlayer_list.Add(gamePlayer);
+                Debug.Log("NetworkRoomManager Count : " + gamePlayer_list.Count);
+
+                //어째서 나에게 이런 시련을
+               
+                // gamePlayer.AddComponent<NetworkIdentity>();
                 
 
 
@@ -676,14 +698,14 @@ namespace Mirror
 
             if (NetworkServer.active && Utils.IsSceneActive(GameplayScene))
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 150f, 10f, 140f, 30f));
+                GUILayout.BeginArea(new Rect(Screen.width - 150f, 10f, 280f, 60f));
                 if (GUILayout.Button("Return to Room"))
                     ServerChangeScene(RoomScene);
                 GUILayout.EndArea();
             }
 
             if (Utils.IsSceneActive(RoomScene))
-                GUI.Box(new Rect(10f, 180f, 520f, 150f), "PLAYERS");
+                GUI.Box(new Rect(10f, 180f, 520f, 300f), "PLAYERS");
         }
 
         #endregion
