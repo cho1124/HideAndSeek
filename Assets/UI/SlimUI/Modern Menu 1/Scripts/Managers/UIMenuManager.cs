@@ -147,6 +147,20 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
+		IEnumerator CameraExitAM_IE()
+        {
+			yield return new WaitForSeconds(3f);
+
+			QuitGame();
+        }
+
+		public void ExitButton()
+        {
+			CameraObject.Play("CameraExitAM", 0, 0);
+
+			StartCoroutine(CameraExitAM_IE());
+        }
+
 		public void CameraBackAM0()
         {
 			CameraObject.Play("CameraBackAM0", 0, 0);
