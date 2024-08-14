@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Player_Control : MonoBehaviour
+public class Player_Control : NetworkBehaviour
 {
 
 
@@ -34,6 +35,8 @@ public class Player_Control : MonoBehaviour
 
     void Update()
     {
+        if (!isLocalPlayer) return; //You shall not pass!!!
+
         //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
         input_move_h = Input.GetAxisRaw("Horizontal");
         input_move_v = Input.GetAxisRaw("Vertical");
@@ -50,6 +53,8 @@ public class Player_Control : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer) return; //You shall not pass!!!
+
         Player_Move(input_move_h, input_move_v, input_jump);
         Player_Rotate(input_cursor_h, input_cursor_v);
     }
@@ -87,52 +92,12 @@ public class Player_Control : MonoBehaviour
     }
 
     private void On_Click()
-    {
-        //RaycastHit[] ray_hits = Physics.RaycastAll(anchor_transform.position, anchor_transform.forward, 10f);
-        //for (int i = 0; i < ray_hits.Length; i++)
-        //{
-        //    Debug.Log($"{ray_hits[i].collider.gameObject.name}");
-        //    if (ray_hits[i].collider.CompareTag("Morphable"))
-        //    {
-        //        GameManager.instance.Morph(gameObject, ray_hits[i].collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
-        //        break;
-        //    }
-        //}
-
+    { 
         RaycastHit hit = new RaycastHit();
         Physics.Raycast(new Ray(anchor_transform.position, anchor_transform.forward), out hit, 10f);
         if (hit.collider.CompareTag("Morphable"))
         {
             GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
-
-            //Destroy(player_body);
-            //
-            //player_body = new GameObject();
-            //player_body.transform.SetParent(gameObject.transform);
-            //player_body.transform.localPosition = transform.up;
-            //player_body.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            //
-            //GameObject morph_to = hit.collider.gameObject;
-            //
-            //MeshFilter mesh_filter_to = morph_to.GetComponent<MeshFilter>();
-            //MeshFilter mesh_filter_from = player_body.AddComponent<MeshFilter>();
-            //mesh_filter_from.sharedMesh = mesh_filter_to.sharedMesh;
-            //
-            //
-            //MeshRenderer mesh_renderer_to = morph_to.GetComponent<MeshRenderer>();
-            //if (mesh_renderer_to != null)
-            //{
-            //    MeshRenderer mesh_renderer_from = player_body.AddComponent<MeshRenderer>();
-            //    mesh_renderer_from.sharedMaterials = mesh_renderer_to.sharedMaterials;
-            //}
-            //
-            //Collider collider_to = morph_to.GetComponent<Collider>();
-            //if (collider_to is MeshCollider)
-            //{
-            //    MeshCollider mesh_collider_to = morph_to.GetComponent<MeshCollider>();
-            //    MeshCollider mesh_collider_from = player_body.AddComponent<MeshCollider>();
-            //    mesh_collider_from.sharedMesh = mesh_collider_to.sharedMesh;
-            //}
         }
     }
 

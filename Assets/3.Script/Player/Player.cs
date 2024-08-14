@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public void Initialize(int max_hp, bool is_seeker)
     {
         hp_current = max_hp;
+
     }
 
     public void TakeDamage(int damage)
