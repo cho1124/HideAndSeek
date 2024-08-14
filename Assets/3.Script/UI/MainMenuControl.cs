@@ -1,52 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 
 public class MainMenuControl : MonoBehaviour
 {
-    public GameObject mainMenu;
-    public GameObject hostMenu;
-    public GameObject joinMenu;
+    public TMP_InputField _ip;
+
+    [SerializeField] GameObject[] hide_objs = null;
 
     [HideInInspector]
     public TMP_InputField _nickName;
 
-
-    public TMP_InputField _ip;
     void Start()
     {
-        mainMenu.SetActive(true);
-        hostMenu.SetActive(false);
-        joinMenu.SetActive(false);
+        for (int i = 0; i < hide_objs.Length; i++)
+        {
+            hide_objs[i].SetActive(false);
+        }
     }
 
-
-
-
-
-    /// 
-    /// 
-    /// 
-    /// 
-    /// ¹ö                              Æ° 
-    /// 
-    /// 
-    /// 
-
-
-    public void OnHostMenuButton()
-    {
-        mainMenu.SetActive(false);
-        hostMenu.SetActive(true);
-    }
-
-
-
-
-    // ´Ð³×ÀÓ ÀÔ·ÂÇÏ°í host
+    // ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï°ï¿½ host
     public void OnHostButton()
     {
         _nickName = GameObject.Find("InputNameField").GetComponent<TMP_InputField>();
@@ -60,27 +35,16 @@ public class MainMenuControl : MonoBehaviour
             var roomManager = HideAndSeekRoomManager.singleton;
             //roomManager.StartHost();
             roomManager.StartHost();
-            SceneManager.LoadScene("Room Scene");
+            SceneManager.LoadScene("WaitingRoom");
         }
-        // host ³»¿ë
+        // host ï¿½ï¿½ï¿½ï¿½
 
     }
 
-
-
-    public void OnJoinMenuButton()
-    {
-        mainMenu.SetActive(false);
-        joinMenu.SetActive(true);
-
-    }
-
-
-
-    // connect ¹öÆ°
+    // connect ï¿½ï¿½Æ°
     public void OnConnectButton()
     {
-        // ip ÀÔ·ÂÇÏ°í µé¾î°¥¶§
+        // ip ï¿½Ô·ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½î°¥ï¿½ï¿½
         _nickName = GameObject.Find("InputNameField").GetComponent<TMP_InputField>();
         _ip = GameObject.Find("InputIpField").GetComponent<TMP_InputField>();
         if(_nickName.text != string.Empty && _ip.text != string.Empty)
@@ -90,50 +54,9 @@ public class MainMenuControl : MonoBehaviour
             GamePlayer.isHost = false;
 
             var roomManager = HideAndSeekRoomManager.singleton;
-            //
             roomManager.networkAddress = GamePlayer.connectToIp;
             roomManager.StartClient();
-            SceneManager.LoadScene("Room Scene");
+            SceneManager.LoadScene("WaitingRoom");
         }
     }
-
-    public void OnBackButton()
-    {
-        if (hostMenu.activeSelf)
-        {
-            hostMenu.SetActive(false);
-            mainMenu.SetActive(true);
-        }
-
-
-        if (joinMenu.activeSelf)
-        {
-            joinMenu.SetActive(false);
-            mainMenu.SetActive(true);
-        }
-    }
-
-
-
-
-
-    public void OnExitButton()
-    {
-        Application.Quit();
-    }
-
-
-
-    /// 
-    /// 
-    /// 
-    /// 
-    /// ¹ö                              Æ°                    ³¡
-    /// 
-    /// 
-    /// 
-
-
-
-
 }
