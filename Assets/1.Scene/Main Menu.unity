@@ -5474,7 +5474,7 @@ MonoBehaviour:
   RoomScene: Assets/1.Scene/Room Scene.unity
   GameplayScene: Assets/1.Scenes/Map_v1.unity
   _allPlayersReady: 0
-  gamePlayer: {fileID: 0}
+  gamePlayer_list: []
   clientIndex: 0
 --- !u!1 &7150093959357330768
 GameObject:
