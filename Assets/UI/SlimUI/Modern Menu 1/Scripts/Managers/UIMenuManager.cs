@@ -83,13 +83,13 @@ namespace SlimUI.ModernMenu{
 		void Start(){
 			CameraObject = transform.GetComponent<Animator>();
 
-			playMenu.SetActive(false);
-			exitMenu.SetActive(false);
-			if(extrasMenu) extrasMenu.SetActive(false);
-			firstMenu.SetActive(true);
-			mainMenu.SetActive(true);
+			// playMenu.SetActive(false);
+			// exitMenu.SetActive(false);
+			// if(extrasMenu) extrasMenu.SetActive(false);
+			// firstMenu.SetActive(true);
+			// mainMenu.SetActive(true);
 
-			SetThemeColors();
+			// SetThemeColors();
 		}
 
 		void SetThemeColors()
@@ -147,6 +147,27 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
+		IEnumerator CameraExitAM_IE()
+        {
+			yield return new WaitForSeconds(3f);
+
+			QuitGame();
+        }
+
+		public void HostButton()
+        {
+			Debug.Log("방 이동");
+
+			SceneManager.LoadScene("WaitingRoom");
+        }
+
+		public void ExitButton()
+        {
+			CameraObject.Play("CameraExitAM", 0, 0);
+
+			StartCoroutine(CameraExitAM_IE());
+        }
+
 		public void CameraBackAM0()
         {
 			CameraObject.Play("CameraBackAM0", 0, 0);
@@ -170,6 +191,7 @@ namespace SlimUI.ModernMenu{
 		public void Position2(){
 			DisablePlayCampaign();
 			CameraObject.SetFloat("Animate",1);
+			CameraObject.Play("MenuCamPos1", 0, 0);
 		}
 
 		public void Position1(){
