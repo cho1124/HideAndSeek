@@ -23,15 +23,15 @@ public class RoomScript : NetworkBehaviour
     void UpdateRoomText()
     {
 
-        // ÇöÀç ÇÃ·¹ÀÌ¾î ¼ö
-        var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>(); //À¸¤Ì¤·¾Æ¤¿¤·¾Æ¤Ã¤Ã¤Ì¤±¤¤¤·¤¤¸Ó¤Ì¤·¤¤¸Ó¤Á¤¿
-        roomPlayersText.text = string.Format($"ÇÃ·¹ÀÌ¾î : {curPlayers.Length} / 5");
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½
+        var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>(); //ï¿½ï¿½ï¿½Ì¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½Æ¤Ã¤Ã¤Ì¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¤Ì¤ï¿½ï¿½ï¿½ï¿½Ó¤ï¿½ï¿½ï¿½
+        roomPlayersText.text = string.Format($"Player: {curPlayers.Length} / 5");
 
     }
 
 
     /// 
-    /// ¹ö                                                  Æ°
+    /// ï¿½ï¿½                                                  Æ°
     /// 
     public void OnReturnButton()
     {
@@ -77,7 +77,7 @@ public class RoomScript : NetworkBehaviour
 
 
     /// 
-    /// ¹ö                       ³¡                         Æ°
+    /// ï¿½ï¿½                       ï¿½ï¿½                         Æ°
     /// 
 
 }
