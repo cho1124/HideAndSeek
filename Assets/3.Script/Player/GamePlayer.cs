@@ -11,4 +11,12 @@ public class GamePlayer : NetworkBehaviour
     public static string connectToIp;
     public static bool isHost;
 
+    private void Start()
+    {
+        gameObject.transform.SetParent(GameObject.Find("PlayerList").transform);
+        GameManager.instance.test_player.Add(gameObject);
+
+        Debug.Log(nickName);
+    }
+
 }

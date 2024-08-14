@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6099693668165957325}
   - component: {fileID: 7959410972707307964}
   - component: {fileID: -5445641180256131213}
+  - component: {fileID: -913892779826645643}
   m_Layer: 0
   m_Name: siball
   m_TagString: Untagged
@@ -104,9 +105,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02cf571d23595d459b0b857efd3acc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move_speed: 5
-  jump_speed: 20
   rb: {fileID: 0}
   anchor_transform: {fileID: 0}
-  player_body: {fileID: 0}
   player_prefab: {fileID: 5353795593500070946, guid: f81f2c3384484dd498000d9dd8274dbb, type: 3}
+  player_body: {fileID: 0}
+  move_speed: 5
+  jump_speed: 20
+--- !u!114 &-913892779826645643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515636503463055878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fdfe29b2d4f92848a3a6e5b3ea0c18f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0

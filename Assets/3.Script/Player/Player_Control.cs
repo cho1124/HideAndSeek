@@ -25,11 +25,11 @@ public class Player_Control : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
-
-        //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
-        player_body = Instantiate(player_prefab);
-        player_body.transform.SetParent(gameObject.transform);
-        player_body.transform.position = transform.position + transform.up;
+        //
+        ////맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
+        //player_body = Instantiate(player_prefab);
+        //player_body.transform.SetParent(gameObject.transform);
+        //player_body.transform.position = transform.position + transform.up;
     }
 
     void Update()
@@ -103,7 +103,7 @@ public class Player_Control : MonoBehaviour
         Physics.Raycast(new Ray(anchor_transform.position, anchor_transform.forward), out hit, 10f);
         if (hit.collider.CompareTag("Morphable"))
         {
-            GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
+            //GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
 
             //Destroy(player_body);
             //
