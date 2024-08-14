@@ -134,7 +134,7 @@ namespace Mirror
                 PendingPlayer pending;
                 pending.conn = conn;
                 pending.roomPlayer = roomPlayer;
-                pendingPlayers.Add(pending); //카운트 받아오기
+                pendingPlayers.Add(pending); 
                 Debug.Log(pendingPlayers.Count);
                 return;
             }
@@ -161,6 +161,10 @@ namespace Mirror
 
                 gamePlayer_list.Add(gamePlayer);
                 Debug.Log("NetworkRoomManager Count : " + gamePlayer_list.Count);
+
+
+
+
 
                 //어째서 나에게 이런 시련을
                
@@ -338,6 +342,8 @@ namespace Mirror
                 Debug.Log($"Not in Room scene...disconnecting {conn}");
                 conn.Disconnect();
             }
+            //GameManager.Instance.RegisterPlayer(player);
+            
         }
 
         [Server]

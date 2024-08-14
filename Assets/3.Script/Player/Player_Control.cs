@@ -117,7 +117,7 @@ public class Player_Control : NetworkBehaviour
         Physics.Raycast(new Ray(anchor_transform.position, anchor_transform.forward), out hit, 10f);
         if (hit.collider.CompareTag("Morphable"))
         {
-            GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
+            //GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
         }
     }
 

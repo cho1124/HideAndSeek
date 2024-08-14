@@ -3,63 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager instance = null;
 
     [Header("흐름처리")]
-    [SerializeField] private float timer = 180f;
-    private bool is_gameover = false;
+    [SyncVar] public float timer = 180f;
+    [SyncVar] private bool isGameOver = false;
 
     [Header("변동 가능 카운트")]
-    [SerializeField] private int seeker_count = 1;
+    [SyncVar] private int seekerCount = 1;
 
     [Header("인 게임 생존 카운트")]
-    [SerializeField] private int seeker_survived_count;
-    [SerializeField] private int hider_survived_count;
+    [SyncVar] private int seekerSurvivedCount;
+    [SyncVar] private int hiderSurvivedCount;
 
     [Header("각 플레이어 리스트")]
-    //[SerializeField] public List<Player> player_seek;
-    //[SerializeField] public List<Player> player_hide;
-    //public List<Player> test_player;
-    [SerializeField] public List<GameObject> player_seek;
-    [SerializeField] public List<GameObject> player_hide;
-    public List<GameObject> test_player;
-
+    [SyncVar] public List<GameObject> playerSeek = new List<GameObject>();
+    [SyncVar] public List<GameObject> playerHide = new List<GameObject>();
 
     [Header("플레이어 프리팹")]
-    [SerializeField] private GameObject player_prefab;
+    [SerializeField] private GameObject playerPrefab;
 
     [Header("오브젝트 프리팹")]
-    [SerializeField] private List<GameObject> object_prefab;
+    [SerializeField] private List<GameObject> objectPrefab;
 
     [Header("스폰포인트")]
-    [SerializeField] private Transform seeker_spawnpoint;
-    [SerializeField] private Transform hider_spawnpoint;
+    [SerializeField] private Transform seekerSpawnpoint;
+    [SerializeField] private Transform hiderSpawnpoint;
 
     private HideAndSeekRoomManager roomManager;
-
-
-    //todo: >>>>> 게임이 시작 될 때 술래인 유저는 player_seek, 술래가 아닌 유저는 player_hide에 list add 하고
-
-    //플레이어가 죽을 때마다 List에서 제거
-    //리스트가 먼저 0이 된 팀이 패배
-    //혹은 타임 아웃 되면 술래 패배
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            //DontDestroy할지 안할지는 
+            DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
             return;
         }
+    }
 
+    //todo: >>>>> 게임이 시작 될 때 술래인 유저는 player_seek, 술래가 아닌 유저는 player_hide에 list add 하고
+
+    //플레이어가 죽을 때마다 List에서 제거
+    //리스트가 먼저 0이 된 팀이 패배
+    //혹은 타임 아웃 되면 술래 패배v
+
+    private void Start()
+    {
+
+        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
+        if (isServer)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     //1. 이전 서버에서 방 멤버 기준으로 난수 돌리기, 1 / n 확률로 술래
@@ -71,75 +73,74 @@ public class GameManager : MonoBehaviour
     //6. 따라서 게임매니저를 단순한 static 혹은 싱글턴을 이용하여 플레이어 생존 카운트를 처리할 수 있도록 해도 될 거 같긴 한데
     //
 
-    private void Start()
-    {
-        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
-
-        //Set_Player(player_seek, seeker_count, 100, true);
-        //Set_Player(player_hide, roomManager.clientIndex - seeker_count, 5, false); //이 부분을 네트워크에서 받아올 예정
-        Time.timeScale = 1;
-
-        Debug.Log("게임플레이어 리스트 :  " + roomManager.gamePlayer_list.Count);
-
-        //Debug.LogError(NetworkServer.spawned[0].netId);
-    }
-
-
     private void Update()
-    {        
-        Check_Timer();
+    {
+        if (isServer)
+        {
+            CheckTimer();
+        }
     }
 
-    private void Check_Timer()
+    [Server]
+    private void CheckTimer()
     {
-        if (timer <= 0 && !is_gameover)
+        if (timer <= 0 && !isGameOver)
         {
-            //GameOver;
-            Debug.Log("Hider Win!");
-            GameOver();
-
+            isGameOver = true;
+            RpcGameOver("Hider Win!");
         }
         else
         {
             timer -= Time.deltaTime;
         }
-
     }
 
-    private void GameOver()
+    [ClientRpc]
+    private void RpcGameOver(string message)
     {
-        is_gameover = true;
-        Time.timeScale = 0; // 게임을 일시정지
-                            // 추가적인 게임 종료 처리 로직
+        Debug.Log(message);
+        Time.timeScale = 0; // 게임 일시정지
+        // 추가적인 게임 종료 처리 로직
     }
 
-    private void Set_Player(List<Player> players, int player_count, int hp, bool is_seeker)
+    [Command]
+    public void CmdPlayerSet()
     {
+        Set_Player(playerSeek, seekerCount, 100, true);
+        Set_Player(playerHide, roomManager.clientIndex - seekerCount, 5, false); //이 부분을 네트워크에서 받아올 예정
+    }
 
-        Transform spawnPoint = is_seeker ? seeker_spawnpoint : hider_spawnpoint;
+    [Server]
+    private void Set_Player(List<GameObject> players, int playerCount, int hp, bool isSeeker)
+    {
+        Transform spawnPoint = isSeeker ? seekerSpawnpoint : hiderSpawnpoint;
 
-        for (int i = 0; i < player_count; i++) //이 부분은 멀티 플레이어에서 유저의 카운트를 받아온 다음에 seeker_count를 뺀 나머지 값으로 계산하라 수 있도록 할 예정
+
+        for (int i = 0; i < playerCount; i++)
         {
-            Player player = Instantiate(object_prefab[0], spawnPoint).AddComponent<Player>(); //여기서 바꿔야 할 부분, object 프리팹을 난수화 추가로 스폰하는 게 아닌 siball 프리팹을 받아서 처리할 것
+            GameObject player = null;
+            NetworkServer.Spawn(player);
 
-            //Player player = 
-            player.transform.position = spawnPoint.position;
-            
-            
-            player.Initialize(hp, is_seeker);
+            // 플레이어 초기화 및 리스트 추가
+            player.GetComponent<Player>().Initialize(hp, isSeeker);
             players.Add(player);
         }
     }
 
-    public void Morph(GameObject player, int prefab_num)
+    [Command]
+    public void CmdMorph(GameObject player, int prefabNum)
     {
-        GameObject player_body = player.GetComponent<Player_Control>().player_body;
-        Destroy(player_body);
-        player_body = 
-            (object_prefab[prefab_num]);
-        player_body.transform.SetParent(player.transform);
-        player_body.transform.localPosition = Vector3.zero;
-        player_body.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        RpcMorph(player, prefabNum);
+    }
+
+    [ClientRpc]
+    private void RpcMorph(GameObject player, int prefabNum)
+    {
+        GameObject playerBody = player.GetComponent<Player_Control>().player_body;
+        Destroy(playerBody);
+
+        playerBody = Instantiate(objectPrefab[prefabNum], player.transform);
+        playerBody.transform.localPosition = Vector3.zero;
+        playerBody.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 }
-
