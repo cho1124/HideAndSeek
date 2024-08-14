@@ -16,7 +16,6 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
     float input_cursor_h, input_cursor_v, input_move_h, input_move_v;
     bool input_jump = false;
-    bool is_jumped = false;
 
     Vector3 velocity_h = Vector3.zero;
     Vector3 velocity_v = Vector3.zero;
@@ -46,7 +45,11 @@ public class Player_Control : NetworkBehaviour
         input_move_v = Input.GetAxisRaw("Vertical");
         input_cursor_h = Input.GetAxis("Mouse X");
         input_cursor_v = Input.GetAxis("Mouse Y");
-        input_jump = Input.GetKeyDown(KeyCode.Space);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StopCoroutine(Jump_Co());
+            StartCoroutine(Jump_Co());
+        }
 
         //클릭했을 때 변신하는 거 예시
         if (Input.GetMouseButtonDown(0))
@@ -76,7 +79,7 @@ public class Player_Control : NetworkBehaviour
             is_ground = false;
             StartCoroutine(Jumping_Co());
         }
-        else if (is_ground)
+        else if (is_ground && !is_jumping)
         {
             velocity_v = Vector3.zero;
         }
@@ -84,8 +87,10 @@ public class Player_Control : NetworkBehaviour
         else velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
 
 
-        if(velocity_v.y == 0f) Debug.Log($"수직 가속도 : {velocity_v.y}");
+        if (velocity_v.y == 0f) Debug.Log($"수직 가속도 : {velocity_v.y}");
+        else Debug.Log("수직 가속도 : != 0");
         Debug.Log($"is_ground : {is_ground}");
+        if (is_jumping) Debug.Log("is_jumping : true");
         //위에서 계산한 가속도를 합하여 적용
         rb.velocity = velocity_h + velocity_v;
     }
@@ -93,7 +98,14 @@ public class Player_Control : NetworkBehaviour
     private void Player_Rotate(float cursor_h, float cursor_v)
     {
         //앵커가 먼저 회전
-        anchor_transform.Rotate(new Vector3(cursor_v * 1.5f, -cursor_h * 1.5f, 0f));
+        //anchor_transform.Rotate(new Vector3(cursor_v * 1.5f, -cursor_h * 1.5f, 0f));
+
+        float target_x = anchor_transform.eulerAngles.x - cursor_v;
+        if (85f < target_x && target_x < 180f) target_x = 85f;
+        else if (180f < target_x && target_x < 275f) target_x = 275f;
+
+        anchor_transform.rotation = Quaternion.Euler(target_x, anchor_transform.eulerAngles.y + cursor_h, 0f);
+        Debug.Log($"{anchor_transform.rotation.x}");
         //앵커 로테이션 값 저장
         Quaternion anchor_rotation = anchor_transform.rotation;
 
@@ -107,7 +119,7 @@ public class Player_Control : NetworkBehaviour
 
     private void Camera_Rotate()
     {
-        camera.transform.position = anchor_transform.position + anchor_transform.forward * -7f + anchor_transform.up * 2f;
+        camera.transform.position = anchor_transform.position + anchor_transform.forward * -7f;
         camera.transform.LookAt(anchor_transform.position);
     }
 
@@ -141,7 +153,7 @@ public class Player_Control : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if((last_contact - transform.position).y < 0.1f)
+        if((last_contact - transform.position).y < 0.05f)
         {
             is_ground = false;
         }
@@ -157,5 +169,12 @@ public class Player_Control : NetworkBehaviour
         is_jumping = true;
         yield return new WaitForSeconds(0.2f);
         is_jumping = false;
+    }
+
+    private IEnumerator Jump_Co()
+    {
+        input_jump = true;
+        yield return new WaitForSeconds(0.1f);
+        input_jump = false;
     }
 }
