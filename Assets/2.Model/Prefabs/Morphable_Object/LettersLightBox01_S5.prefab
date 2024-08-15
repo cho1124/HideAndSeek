@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: -7176196515212864329}
   m_Layer: 0
   m_Name: LettersLightBox01_S5
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6684586267079231364}
   m_Layer: 0
   m_Name: Oil_tank_v2 (10)
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

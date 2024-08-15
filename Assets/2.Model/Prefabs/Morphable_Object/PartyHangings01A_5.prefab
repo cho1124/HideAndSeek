@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1668020865391712234}
   - component: {fileID: 5377216797842773924}
   - component: {fileID: 4372621311577163794}
+  - component: {fileID: -6822590719316334009}
   m_Layer: 0
   m_Name: PartyHangings01A_5
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -106,6 +107,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3145027, y: 0.19797608, z: 0.006874153}
   m_Center: {x: -0.0038971007, y: -0.08523969, z: 0.003253529}
+--- !u!114 &-6822590719316334009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125189481507971042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307ec4e16e91bce458e437c06d4f55ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab_num: 16
 --- !u!1 &6504637877303485172
 GameObject:
   m_ObjectHideFlags: 0

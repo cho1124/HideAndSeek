@@ -473,7 +473,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 72
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -972,11 +972,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7afd3e343de004589b32cc0d59e066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 1321906126}
-  hostMenu: {fileID: 2026855297}
-  joinMenu: {fileID: 556242471}
-  _nickName: {fileID: 0}
   _ip: {fileID: 0}
+  hide_objs: []
+  _nickName: {fileID: 0}
 --- !u!4 &292581172
 Transform:
   m_ObjectHideFlags: 0
@@ -1097,7 +1095,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1432,7 +1430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &556242472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4407,7 +4405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2026855298
 RectTransform:
   m_ObjectHideFlags: 0

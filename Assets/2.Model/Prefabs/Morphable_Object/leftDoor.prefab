@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6531668107828116112}
   m_Layer: 8
   m_Name: leftDoor
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

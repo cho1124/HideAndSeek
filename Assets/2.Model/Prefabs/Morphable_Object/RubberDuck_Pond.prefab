@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 794034492241895832}
   - component: {fileID: 3773086224959710307}
   - component: {fileID: 9069627106759477070}
+  - component: {fileID: 1085259080726846460}
   m_Layer: 0
   m_Name: RubberDuck_Pond
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,3 +106,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8254455, y: 1.7659367, z: 1.3345859}
   m_Center: {x: 0, y: -0.14509289, z: 0.68039525}
+--- !u!114 &1085259080726846460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641865919061858369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307ec4e16e91bce458e437c06d4f55ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab_num: 27
