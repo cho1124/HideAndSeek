@@ -14,8 +14,11 @@ public class Player_Control : NetworkBehaviour
     
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
-    float input_cursor_h, input_cursor_v, input_move_h, input_move_v;
-    bool input_jump = false;
+    public float input_cursor_h, input_cursor_v, input_move_h, input_move_v;
+    public bool input_jump = false;
+    public bool is_jumping = false;
+    public bool is_ground = false;
+    Vector3 last_contact = new Vector3();
 
     Vector3 velocity_h = Vector3.zero;
     Vector3 velocity_v = Vector3.zero;
@@ -29,7 +32,7 @@ public class Player_Control : NetworkBehaviour
         //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
         player_body = Instantiate(player_prefab);
         player_body.transform.SetParent(gameObject.transform);
-        player_body.transform.position = transform.position + transform.up;
+        player_body.transform.localPosition = Vector3.zero;
     }
 
     void Update()
@@ -144,10 +147,6 @@ public class Player_Control : NetworkBehaviour
             is_ground = false;
         }
     }
-
-    Vector3 last_contact = new Vector3();
-    bool is_ground = false;
-    bool is_jumping = false;
 
     private IEnumerator Jumping_Co()
     {
