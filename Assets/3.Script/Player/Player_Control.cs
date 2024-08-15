@@ -8,9 +8,9 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_prefab;
+    [SerializeField] private GameObject main_camera;
 
     public GameObject player_body;
-    private GameObject camera;
     
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
@@ -24,11 +24,7 @@ public class Player_Control : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
-        
-        camera = new GameObject();
-        camera.AddComponent<NetworkIdentity>();
-        camera.AddComponent<Camera>();
-
+        main_camera = GameObject.Find("Main_Camera");
 
         //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
         player_body = Instantiate(player_prefab);
@@ -114,13 +110,8 @@ public class Player_Control : NetworkBehaviour
         //같이 회전해버린 앵커를 정상화
         anchor_transform.rotation = anchor_rotation;
 
-        Camera_Rotate();
-    }
-
-    private void Camera_Rotate()
-    {
-        camera.transform.position = anchor_transform.position + anchor_transform.forward * -7f;
-        camera.transform.LookAt(anchor_transform.position);
+        main_camera.transform.position = anchor_transform.position + anchor_transform.forward * -7f;
+        main_camera.transform.LookAt(anchor_transform.position);
     }
 
     private void On_Click()
@@ -131,11 +122,6 @@ public class Player_Control : NetworkBehaviour
         {
             //GameManager.instance.Morph(gameObject, hit.collider.gameObject.GetComponent<Morphable_Object>().prefab_num);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-       // Gizmos.DrawRay(anchor_transform.position, anchor_transform.forward * 10f);
     }
 
     private void OnCollisionStay(Collision collision)
@@ -160,7 +146,6 @@ public class Player_Control : NetworkBehaviour
     }
 
     Vector3 last_contact = new Vector3();
-
     bool is_ground = false;
     bool is_jumping = false;
 

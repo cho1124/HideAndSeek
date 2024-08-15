@@ -110,9 +110,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  rb: {fileID: 0}
-  anchor_transform: {fileID: 0}
+  rb: {fileID: 7959410972707307964}
+  anchor_transform: {fileID: 2590493924593807712}
   player_prefab: {fileID: 5353795593500070946, guid: f81f2c3384484dd498000d9dd8274dbb, type: 3}
+  main_camera: {fileID: 0}
   player_body: {fileID: 0}
   move_speed: 5
   jump_speed: 10
