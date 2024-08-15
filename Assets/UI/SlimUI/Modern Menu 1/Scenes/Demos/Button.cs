@@ -10,7 +10,7 @@ public class Button : MonoBehaviour
 
     public void ReadyLoading()
     {
-        Debug.Log("ÁØºñ ¿Ï·á");
+        Debug.Log("ê²Œì„ ì‹œì‘");
 
         server_room_obj.SetActive(false);
         loading_obj.SetActive(true);
@@ -18,7 +18,7 @@ public class Button : MonoBehaviour
 
     public void BackLoading()
     {
-        Debug.Log("·Îºñ ÀÌµ¿");
+        Debug.Log("ë¡œë¹„ ì´ë™");
 
         SceneManager.LoadScene("Lobby");
     }
