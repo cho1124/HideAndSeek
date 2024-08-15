@@ -9,8 +9,6 @@ public class RoomScript : NetworkBehaviour
     private void Awake()
     {
         var roomManager = HideAndSeekRoomManager.singleton;
-
-        
     }
 
     private void Update()
@@ -18,15 +16,11 @@ public class RoomScript : NetworkBehaviour
         UpdateRoomText();
     }
 
-
-
     void UpdateRoomText()
     {
-
         // ���� �÷��̾� ��
         var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>(); //���̤��Ƥ����Ƥää̤��������Ӥ̤����Ӥ���
         roomPlayersText.text = string.Format($"Player: {curPlayers.Length} / 5");
-
     }
 
 
