@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3135512479394734103}
   m_Layer: 0
   m_Name: Candy Cane
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 82

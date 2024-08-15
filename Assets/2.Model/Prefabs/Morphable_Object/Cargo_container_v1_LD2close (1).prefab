@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6422131904673745331}
   m_Layer: 0
   m_Name: Cargo_container_v1_LD2close (1)
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

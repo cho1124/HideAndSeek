@@ -14387,7 +14387,7 @@ GameObject:
   - component: {fileID: 5130302282322797756}
   m_Layer: 0
   m_Name: Gifts
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 82

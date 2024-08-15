@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1507541791029521220}
   m_Layer: 0
   m_Name: Palet_v1_set
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

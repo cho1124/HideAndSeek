@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3585670712071524800}
   - component: {fileID: 6487526171962600624}
   - component: {fileID: 8169675046414650966}
+  - component: {fileID: 8176572937557088083}
   m_Layer: 0
   m_Name: PartyHangingStar02B_1
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -106,6 +107,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2938612, y: 0.7636077, z: 0.012151837}
   m_Center: {x: 0, y: -0.38180378, z: 0.000000078231096}
+--- !u!114 &8176572937557088083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5345596421131346186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307ec4e16e91bce458e437c06d4f55ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab_num: 21
 --- !u!1 &7453103509042879126
 GameObject:
   m_ObjectHideFlags: 0

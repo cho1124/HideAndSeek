@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -5241812766464018814}
   m_Layer: 0
   m_Name: Concrete_fence_v1_wall_set_v1
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

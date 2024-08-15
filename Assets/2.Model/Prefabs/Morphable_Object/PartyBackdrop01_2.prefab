@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 755920817994899281}
   - component: {fileID: 7439867337790799641}
   - component: {fileID: 1412320501037368630}
+  - component: {fileID: 7645763744554440496}
   m_Layer: 0
   m_Name: PartyBackdrop01_2
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -106,6 +107,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.499998, y: 3.4079125, z: 0.19886397}
   m_Center: {x: 0.0000009536743, y: 1.703302, z: 0.06246949}
+--- !u!114 &7645763744554440496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4809508237690169982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307ec4e16e91bce458e437c06d4f55ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab_num: 1
 --- !u!1 &6327517515201565616
 GameObject:
   m_ObjectHideFlags: 0

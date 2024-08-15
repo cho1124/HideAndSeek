@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7807012368655973921}
   m_Layer: 0
   m_Name: Concrete_fence_v1_column (1)
-  m_TagString: Morphable
+  m_TagString: Changable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
