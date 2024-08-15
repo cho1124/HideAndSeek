@@ -10,7 +10,7 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private GameObject player_prefab;
 
     public GameObject player_body;
-    private Transform camera;
+    private GameObject camera;
 
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
@@ -32,9 +32,11 @@ public class Player_Control : NetworkBehaviour
     void Update()
     {
         // PlayerInput
-
-        PlayerInput();
-
+        if (isLocalPlayer)
+        {
+            //ClientPlayerInput();
+            PlayerInput();
+        }
     }
 
     private void FixedUpdate()
@@ -57,10 +59,9 @@ public class Player_Control : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
 
-        //camera = new GameObject();
-        camera = transform.Find("Camera");
-        //camera.AddComponent<NetworkIdentity>();
-        //camera.AddComponent<Camera>();
+        camera = new GameObject();
+        camera.AddComponent<NetworkIdentity>();
+        camera.AddComponent<Camera>();
 
 
         //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
@@ -71,10 +72,10 @@ public class Player_Control : NetworkBehaviour
 
 
 
- 
+    [Client]
     void PlayerInput()
     {
-        if (!isLocalPlayer) return; //You shall not pass!!!
+        //if (!isLocalPlayer) return; //You shall not pass!!!
 
         //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
         input_move_h = Input.GetAxisRaw("Horizontal");
@@ -100,7 +101,7 @@ public class Player_Control : NetworkBehaviour
     void PlayerTransformControl()
     {
 
-        if (!isLocalPlayer) return; //You shall not pass!!!
+        //if (!isLocalPlayer) return; //You shall not pass!!!
 
         Player_Move(input_move_h, input_move_v, input_jump);
         Player_Rotate(input_cursor_h, input_cursor_v);

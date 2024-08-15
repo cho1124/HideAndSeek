@@ -15,7 +15,10 @@ public class GamePlayer : NetworkBehaviour
 
     private void Start()
     {
-
+        //gameObject.transform.SetParent(GameObject.Find("PlayerList").transform);
+        //GameManager.instance.test_player.Add(gameObject);
+        //
+        //Debug.Log(nickName);
     }
 
 }
