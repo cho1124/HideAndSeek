@@ -13,6 +13,9 @@ public class MainMenuControl : MonoBehaviour
     [HideInInspector]
     public TMP_InputField _nickName;
 
+    public string SceneName = "WaitingRoom";
+
+
     void Start()
     {
         for (int i = 0; i < hide_objs.Length; i++)
@@ -35,7 +38,8 @@ public class MainMenuControl : MonoBehaviour
             var roomManager = HideAndSeekRoomManager.singleton;
             //roomManager.StartHost();
             roomManager.StartHost();
-            SceneManager.LoadScene("WaitingRoom");
+            //SceneManager.LoadScene("Room Scene");
+            SceneManager.LoadScene(SceneName);
         }
         // host ����
 
@@ -56,7 +60,7 @@ public class MainMenuControl : MonoBehaviour
             var roomManager = HideAndSeekRoomManager.singleton;
             roomManager.networkAddress = GamePlayer.connectToIp;
             roomManager.StartClient();
-            SceneManager.LoadScene("WaitingRoom");
+            SceneManager.LoadScene("Room Scene");
         }
     }
 }
