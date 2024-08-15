@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -46,6 +47,7 @@ public class GameManager : NetworkBehaviour
             Destroy(gameObject);
             return;
         }
+        
     }
 
     //todo: >>>>> 게임이 시작 될 때 술래인 유저는 player_seek, 술래가 아닌 유저는 player_hide에 list add 하고
@@ -56,7 +58,7 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
-
+        
         roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
         if (isServer)
         {
@@ -75,11 +77,18 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
+
+        if (SceneManager.GetActiveScene().name != System.IO.Path.GetFileNameWithoutExtension(roomManager.GameplayScene)) return;
+
+
+
         if (isServer)
         {
             CheckTimer();
         }
     }
+
+    
 
     [Server]
     private void CheckTimer()
@@ -108,6 +117,12 @@ public class GameManager : NetworkBehaviour
     {
         Set_Player(playerSeek, seekerCount, 100, true);
         Set_Player(playerHide, roomManager.clientIndex - seekerCount, 5, false); //이 부분을 네트워크에서 받아올 예정
+    }
+
+    
+    public void AddPlayer(GameObject player)
+    {
+        playerSeek.Add(player);
     }
 
     [Server]

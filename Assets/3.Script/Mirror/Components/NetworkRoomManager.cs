@@ -124,7 +124,7 @@ namespace Mirror
             
         }
 
-        void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
+        public virtual void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
         {
             //Debug.Log($"NetworkRoom SceneLoadedForPlayer scene: {SceneManager.GetActiveScene().path} {conn}");
 
@@ -159,20 +159,8 @@ namespace Mirror
 
                 //Debug.Log(gamePlayer.transform.position);
 
+                //Debug.Log(SceneManager.GetActiveScene().name);
                 gamePlayer_list.Add(gamePlayer);
-                Debug.Log("NetworkRoomManager Count : " + gamePlayer_list.Count);
-
-
-
-
-
-                //어째서 나에게 이런 시련을
-               
-                // gamePlayer.AddComponent<NetworkIdentity>();
-                
-
-
-                //게임매니저와 연결
             }
 
             if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
@@ -181,6 +169,8 @@ namespace Mirror
             // replace room player with game player
             
             NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
+            
+            
         }
 
         internal void CallOnClientEnterRoom()
@@ -384,7 +374,9 @@ namespace Mirror
 
                 allPlayersReady = false;
             }
+            
 
+            Debug.Log("Server Changed to : " + newSceneName);
             base.ServerChangeScene(newSceneName);
         }
 

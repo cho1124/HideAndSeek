@@ -83,10 +83,10 @@ public class Player_Control : NetworkBehaviour
         else velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
 
 
-        if (velocity_v.y == 0f) Debug.Log($"수직 가속도 : {velocity_v.y}");
-        else Debug.Log("수직 가속도 : != 0");
-        Debug.Log($"is_ground : {is_ground}");
-        if (is_jumping) Debug.Log("is_jumping : true");
+        //if (velocity_v.y == 0f) Debug.Log($"수직 가속도 : {velocity_v.y}");
+        //else Debug.Log("수직 가속도 : != 0");
+        //Debug.Log($"is_ground : {is_ground}");
+        //if (is_jumping) Debug.Log("is_jumping : true");
         //위에서 계산한 가속도를 합하여 적용
         rb.velocity = velocity_h + velocity_v;
     }
@@ -101,7 +101,7 @@ public class Player_Control : NetworkBehaviour
         else if (180f < target_x && target_x < 275f) target_x = 275f;
 
         anchor_transform.rotation = Quaternion.Euler(target_x, anchor_transform.eulerAngles.y + cursor_h, 0f);
-        Debug.Log($"{anchor_transform.rotation.x}");
+        //Debug.Log($"{anchor_transform.rotation.x}");
         //앵커 로테이션 값 저장
         Quaternion anchor_rotation = anchor_transform.rotation;
 
