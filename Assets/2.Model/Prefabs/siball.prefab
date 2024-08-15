@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7088778927070006016}
   - component: {fileID: 2880576693789020198}
+  - component: {fileID: 6099693668165957325}
   - component: {fileID: 7959410972707307964}
   - component: {fileID: -5445641180256131213}
   - component: {fileID: -913892779826645643}
   - component: {fileID: 8723578946939364144}
-  - component: {fileID: -8988428050433306241}
   m_Layer: 0
   m_Name: siball
   m_TagString: Untagged
@@ -51,6 +51,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testobj: {fileID: 781067129161604679, guid: 10476671597da0b4fa3cfed87b95859f, type: 3}
+--- !u!114 &6099693668165957325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515636503463055878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 2978544608
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!54 &7959410972707307964
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -93,9 +110,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  rb: {fileID: 0}
-  anchor_transform: {fileID: 0}
+  rb: {fileID: 7959410972707307964}
+  anchor_transform: {fileID: 2590493924593807712}
   player_prefab: {fileID: 5353795593500070946, guid: f81f2c3384484dd498000d9dd8274dbb, type: 3}
+  main_camera: {fileID: 0}
   player_body: {fileID: 0}
   move_speed: 5
   jump_speed: 10
@@ -126,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   target: {fileID: 7088778927070006016}
@@ -148,23 +166,6 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &-8988428050433306241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2515636503463055878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 2978544608
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!1 &7849846510720317987
 GameObject:
   m_ObjectHideFlags: 0
