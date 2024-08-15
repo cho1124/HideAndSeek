@@ -138,7 +138,7 @@ public class GameManager : NetworkBehaviour
     {
         GameObject playerBody = player.GetComponent<Player_Control>().player_body;
         Destroy(playerBody);
-
+    
         playerBody = Instantiate(objectPrefab[prefabNum], player.transform);
         playerBody.transform.localPosition = Vector3.zero;
         playerBody.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);

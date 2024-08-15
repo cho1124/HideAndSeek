@@ -5444,7 +5444,7 @@ MonoBehaviour:
   offlineScene: Assets/1.Scene/Main Menu.unity
   onlineScene: Assets/1.Scene/Room Scene.unity
   transport: {fileID: 7150093959357330769}
-  networkAddress: localhost
+  networkAddress: 
   maxConnections: 5
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -5452,7 +5452,13 @@ MonoBehaviour:
   playerPrefab: {fileID: 2515636503463055878, guid: 931e6984ae8c1d5498ec8e3e70d04c01, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 5353795593500070946, guid: f81f2c3384484dd498000d9dd8274dbb, type: 3}
+  - {fileID: 6771322673693891525, guid: 4836bc10c731c574daf1eb7bc9ae2561, type: 3}
+  - {fileID: 4850581910434326615, guid: 83ba5af30de1e3543892b070367f5c69, type: 3}
+  - {fileID: 6878100419721715056, guid: b260a88d54033ab4ca456185507cb809, type: 3}
+  - {fileID: 6353932690271290308, guid: 7594331051e710f41a0036459e61778f, type: 3}
+  - {fileID: 2515636503463055878, guid: 931e6984ae8c1d5498ec8e3e70d04c01, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
