@@ -5444,14 +5444,14 @@ MonoBehaviour:
   offlineScene: Assets/1.Scene/Main Menu.unity
   onlineScene: Assets/1.Scene/Room Scene.unity
   transport: {fileID: 7150093959357330769}
-  networkAddress: 172.30.1.61
+  networkAddress: localhost
   maxConnections: 5
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 2515636503463055878, guid: 931e6984ae8c1d5498ec8e3e70d04c01, type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 1
+  playerSpawnMethod: 0
   spawnPrefabs: []
   exceptionsDisconnect: 1
   snapshotSettings:

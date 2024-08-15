@@ -11,7 +11,7 @@ public class Player_Control : NetworkBehaviour
 
     public GameObject player_body;
     private GameObject camera;
-    
+
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
     float input_cursor_h, input_cursor_v, input_move_h, input_move_v;
@@ -22,9 +22,43 @@ public class Player_Control : NetworkBehaviour
 
     void Start()
     {
+        // Init
+        if (isLocalPlayer)
+        {
+            ClientInit();
+        }
+    }
+
+    void Update()
+    {
+        // PlayerInput
+        if (isLocalPlayer)
+        {
+            //ClientPlayerInput();
+            PlayerInput();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // PlayerTransformControl
+        if (isLocalPlayer)
+        {
+            //ClientPlayerTransformControl();
+            CmdPlayerTransformControl();
+        }
+    }
+
+
+    [ClientRpc]
+    private void Init()
+    {
+
+        //if (!isLocalPlayer) return;
+
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
-        
+
         camera = new GameObject();
         camera.AddComponent<NetworkIdentity>();
         camera.AddComponent<Camera>();
@@ -36,9 +70,12 @@ public class Player_Control : NetworkBehaviour
         player_body.transform.position = transform.position + transform.up;
     }
 
-    void Update()
+
+
+    [Client]
+    void PlayerInput()
     {
-        if (!isLocalPlayer) return; //You shall not pass!!!
+        //if (!isLocalPlayer) return; //You shall not pass!!!
 
         //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
         input_move_h = Input.GetAxisRaw("Horizontal");
@@ -56,15 +93,23 @@ public class Player_Control : NetworkBehaviour
         {
             On_Click();
         }
+
+
     }
 
-    private void FixedUpdate()
+    [ClientRpc]
+    void PlayerTransformControl()
     {
-        if (!isLocalPlayer) return; //You shall not pass!!!
+
+        //if (!isLocalPlayer) return; //You shall not pass!!!
 
         Player_Move(input_move_h, input_move_v, input_jump);
         Player_Rotate(input_cursor_h, input_cursor_v);
+
     }
+
+
+
 
     private void Player_Move(float move_h, float move_v, bool input_jump)
     {
@@ -124,7 +169,7 @@ public class Player_Control : NetworkBehaviour
     }
 
     private void On_Click()
-    { 
+    {
         RaycastHit hit = new RaycastHit();
         Physics.Raycast(new Ray(anchor_transform.position, anchor_transform.forward), out hit, 10f);
         if (hit.collider.CompareTag("Morphable"))
@@ -135,30 +180,57 @@ public class Player_Control : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
-       // Gizmos.DrawRay(anchor_transform.position, anchor_transform.forward * 10f);
+        // Gizmos.DrawRay(anchor_transform.position, anchor_transform.forward * 10f);
     }
 
+
+
+    [Client]
     private void OnCollisionStay(Collision collision)
     {
-        for(int i = 0; i < collision.contacts.Length; i++)
+        for (int i = 0; i < collision.contacts.Length; i++)
         {
             //콜라이더 충돌 시 접촉점의 방향을 구하고, 만약 방향이 아래 방향, 즉 땅일 경우 다시 점프 가능하도록 설정
-            if((collision.contacts[i].point - transform.position).y < 0.1f && !is_jumping)
+            if ((collision.contacts[i].point - transform.position).y < 0.1f && !is_jumping)
             {
-                last_contact = collision.contacts[i].point;
-                is_ground = true;
+                //last_contact = collision.contacts[i].point;
+                //is_ground = true;
+
+                CmdOnCollisionStay(collision.contacts[i].point);
+
             }
         }
     }
 
+
+    [Command]
+    private void CmdOnCollisionStay(Vector3 contactPoint)
+    {
+        last_contact = contactPoint;
+        is_ground = true;
+    }
+
+
+
+    [Client]
     private void OnCollisionExit(Collision collision)
     {
-        if((last_contact - transform.position).y < 0.05f)
+        if ((last_contact - transform.position).y < 0.05f)
         {
-            is_ground = false;
+            CmdOnCollisionExit();
         }
     }
 
+
+    [Command]
+    private void CmdOnCollisionExit()
+    {
+        is_ground = false;
+    }
+
+
+
+    #region jump
     Vector3 last_contact = new Vector3();
 
     bool is_ground = false;
@@ -177,4 +249,52 @@ public class Player_Control : NetworkBehaviour
         yield return new WaitForSeconds(0.1f);
         input_jump = false;
     }
+
+    #endregion jump
+
+
+
+
+
+    [Client]
+    public void ClientInit()
+    {
+        CmdInit();
+    }
+
+    [Command]
+    public void CmdInit()
+    {
+        Init();
+    }
+
+
+
+    [Client]
+    public void ClientPlayerTransformControl()
+    {
+        CmdPlayerTransformControl();
+    }
+
+    [Command]
+    public void CmdPlayerTransformControl()
+    {
+
+        PlayerTransformControl();
+
+    }
+
+
+    //[Client]
+    //public void ClientPlayerInput()
+    //{
+    //    CmdPlayerInput();
+    //}
+
+    //[Command]
+    //public void CmdPlayerInput()
+    //{
+    //    PlayerInput();
+    //}
+
 }
