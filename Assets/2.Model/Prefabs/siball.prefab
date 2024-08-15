@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -5445641180256131213}
   - component: {fileID: -913892779826645643}
   - component: {fileID: 8723578946939364144}
+  - component: {fileID: 7845623374730717735}
   m_Layer: 0
   m_Name: siball
   m_TagString: Untagged
@@ -166,6 +167,20 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!114 &7845623374730717735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515636503463055878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dadb4cfda58f5e147ab13d4c9cd838a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  is_dead: 0
+  is_seeker: 0
 --- !u!1 &7849846510720317987
 GameObject:
   m_ObjectHideFlags: 0

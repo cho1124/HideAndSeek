@@ -22,6 +22,7 @@ public class GameManager : NetworkBehaviour
     [Header("각 플레이어 리스트")]
     [SyncVar] public List<GameObject> playerSeek = new List<GameObject>();
     [SyncVar] public List<GameObject> playerHide = new List<GameObject>();
+    [SyncVar] public List<GameObject> deadPlayers = new List<GameObject>();
 
     [Header("플레이어 프리팹")]
     [SerializeField] private GameObject playerPrefab;
@@ -88,7 +89,21 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    
+    [Server]
+    public void AddPlayerToGame(GameObject player)
+    {
+        // 임의로 플레이어를 분배 (예를 들어 첫 번째 플레이어는 술래) >>> 이 부분 또한 랜덤을 통해 돌릴 예정
+        if (playerSeek.Count == 0)
+        {
+            playerSeek.Add(player);
+            player.GetComponent<Player>().Initialize(100, true);  // hp는 100, 이 플레이어는 술래
+        }
+        else
+        {
+            playerHide.Add(player);
+            player.GetComponent<Player>().Initialize(100, false);  // hp는 100, 이 플레이어는 숨는 사람
+        }
+    }
 
     [Server]
     private void CheckTimer()
@@ -119,12 +134,9 @@ public class GameManager : NetworkBehaviour
         Set_Player(playerHide, roomManager.clientIndex - seekerCount, 5, false); //이 부분을 네트워크에서 받아올 예정
     }
 
-    
-    public void AddPlayer(GameObject player)
-    {
-        playerSeek.Add(player);
-    }
 
+
+    //이 부분은 플레이어의 스폰 위치등을 할당하는 역할을 할 예정
     [Server]
     private void Set_Player(List<GameObject> players, int playerCount, int hp, bool isSeeker)
     {
@@ -158,4 +170,44 @@ public class GameManager : NetworkBehaviour
         playerBody.transform.localPosition = Vector3.zero;
         playerBody.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
+
+    public void PlayerDied(GameObject player)
+    {
+        if (playerSeek.Contains(player))
+        {
+            playerSeek.Remove(player);
+        }
+        else if (playerHide.Contains(player))
+        {
+            playerHide.Remove(player);
+        }
+
+        deadPlayers.Add(player);
+
+        CheckGameEndCondition();
+    }
+
+    [Server]
+    private void CheckGameEndCondition()
+    {
+        //모든 숨는 사람이 죽었을 때 게임 종료
+        if (playerHide.Count == 0)
+        {
+            RpcEndGame("Seeker Wins!");
+        }
+        else if (playerSeek.Count == 0)
+        {
+            RpcEndGame("Hiders Win!");
+        }
+    }
+
+    [ClientRpc]
+    private void RpcEndGame(string result)
+    {
+        //모든 클라이언트에게 게임 결과를 알림
+        Debug.Log(result);
+        //게임 종료 화면을 표시하거나, 새로운 씬을 로드할 수 있음
+    }
+
+
 }

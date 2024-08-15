@@ -26,8 +26,6 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     }
 
 
-    
-
     public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
     {
         if (Utils.IsSceneActive(RoomScene))
@@ -62,7 +60,8 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             //Debug.Log(gamePlayer.transform.position);
 
             //Debug.Log(SceneManager.GetActiveScene().name);
-            GameManager.instance.playerSeek.Add(gamePlayer);
+            //GameManager.instance.playerSeek.Add(gamePlayer);
+            GameManager.instance.AddPlayerToGame(gamePlayer);
         }
 
         if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
@@ -77,16 +76,5 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 
 
     // 게임 매니저에 플레이어를 추가하는 메서드
-    private void AddPlayerToGameManager(List<GameObject> player)
-    {
-        foreach(GameObject gamePlayer in player)
-        {
-            GameManager.instance.AddPlayer(gamePlayer);
-        }
-
-
-        
-    }
-
-
+    
 }

@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     {
 
         is_dead = true;
+        GameManager.instance.PlayerDied(gameObject);
 
         //술래 혹은 술래가 아닌 경우를 게임매니저에서 받아와서 할 것
         //GameManager.instance.
