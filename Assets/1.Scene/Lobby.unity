@@ -2771,10 +2771,40 @@ MonoBehaviour:
   playerSeek: []
   playerHide: []
   deadPlayers: []
-  playerPrefab: {fileID: 0}
-  objectPrefab: []
-  seekerSpawnpoint: {fileID: 0}
-  hiderSpawnpoint: {fileID: 0}
+  seekerSpawnpoint: {fileID: 719183382977230162, guid: d62f1f6ea93918a4fb56a3b9f438e878, type: 3}
+  hiderSpawnpoint: {fileID: 8088152999707955203, guid: 722042b4eea805c4893f4e0c12c7bed7, type: 3}
+  seeker_obj: {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
+  hider_obj:
+  - {fileID: 1337530944803012124, guid: 5cbad48e92d4bb1498c66f2e75a7cfd3, type: 3}
+  - {fileID: 3258255104939394870, guid: 6de3bb34110c3d44d81c01caee7ff944, type: 3}
+  - {fileID: 280230275704647445, guid: 6535978bb3e798a40a1f3d2c793a07ee, type: 3}
+  - {fileID: 5302878481541077009, guid: 38135384fa71d3340ab1279675148d40, type: 3}
+  - {fileID: 1612489427195792840, guid: 6117574e419b22847add6f5bae982309, type: 3}
+  - {fileID: 4780442610186618612, guid: 55ae1ce05158e254dbceea97427208ae, type: 3}
+  - {fileID: 584451508402470766, guid: 7448caeaacf4a224c9e7186858f8305c, type: 3}
+  - {fileID: 4732031668705689423, guid: a48ebf0c399bef641a686f138850fa7c, type: 3}
+  - {fileID: 9137925057143320088, guid: 794252bf4a70b564a8d95f1baf29da5a, type: 3}
+  - {fileID: 5026720983788295853, guid: a13b0a7b3357d154298bca4c38237d57, type: 3}
+  - {fileID: 1984534621321894326, guid: 3f3bfd5ab0b53cf4799509d4442ea412, type: 3}
+  - {fileID: 5196793126583014106, guid: 7f4ec7ad1d8aa8745b8c75338375e4dc, type: 3}
+  - {fileID: 7563003716110994141, guid: 583304f214702b94bbf70f014e9ac722, type: 3}
+  - {fileID: 4687809522256418195, guid: c4b354363c9120f42ace8094661b9c9c, type: 3}
+  - {fileID: 4809508237690169982, guid: 40571c3eb96a9054eae875b43abca0be, type: 3}
+  - {fileID: 4707955618953361058, guid: 48d60315a34a19a49a16ce95b4a0e385, type: 3}
+  - {fileID: 125189481507971042, guid: 0ee44a4e8d02a6f43813618d252f8f0c, type: 3}
+  - {fileID: 8834064447416137348, guid: ad3d5ce235905d344b5e35382677ee66, type: 3}
+  - {fileID: 4850581910434326615, guid: 83ba5af30de1e3543892b070367f5c69, type: 3}
+  - {fileID: 8964583198292471585, guid: 4a490d2da9447b940a4ce49a0dddb8b1, type: 3}
+  - {fileID: 841649126445549117, guid: f787d711adbac1f478beea077c31825a, type: 3}
+  - {fileID: 5345596421131346186, guid: f999f86020f410c4f9cc376fcd97c0b1, type: 3}
+  - {fileID: 6636607989463671931, guid: 6ab67ffa96fdcfa4a91098c6b283a396, type: 3}
+  - {fileID: 5895921428286528944, guid: 9662a3c3ed33f46488aadd0b98ca1766, type: 3}
+  - {fileID: 1000013497408264, guid: 55096903922d4314698414d961ceac0c, type: 3}
+  - {fileID: 781067129161604679, guid: 10476671597da0b4fa3cfed87b95859f, type: 3}
+  - {fileID: 176708, guid: c2d842621badc4e48bbd4fbc98a8949f, type: 3}
+  - {fileID: 7641865919061858369, guid: 3259a5f9427d9fb41abbaec6adf42d02, type: 3}
+  - {fileID: 2666114600347996114, guid: 0dcdf8e8b8127064898c262c8b409350, type: 3}
+  - {fileID: 7027531385698243166, guid: be6c26163a4783541bdb881c0af21b10, type: 3}
 --- !u!4 &2147166013
 Transform:
   m_ObjectHideFlags: 0

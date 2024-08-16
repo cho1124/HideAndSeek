@@ -30,9 +30,7 @@ public class Player_Control : NetworkBehaviour
         main_camera = GameObject.Find("Main_Camera");
 
         //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
-        player_body = Instantiate(player_prefab);
-        player_body.transform.SetParent(gameObject.transform);
-        player_body.transform.localPosition = Vector3.zero;
+        
     }
 
     void Update()
@@ -56,6 +54,15 @@ public class Player_Control : NetworkBehaviour
             On_Click();
         }
     }
+
+    public void Initiallize_Player(GameObject player, Transform spawnPoint)
+    {
+        player_body = Instantiate(player);
+        player_body.transform.SetParent(gameObject.transform);
+        player_body.transform.localPosition = Vector3.zero;
+        gameObject.transform.position = spawnPoint.position;
+    }
+
 
     private void FixedUpdate()
     {

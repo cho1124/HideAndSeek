@@ -24,17 +24,17 @@ public class GameManager : NetworkBehaviour
     [SyncVar] public List<GameObject> playerHide = new List<GameObject>();
     [SyncVar] public List<GameObject> deadPlayers = new List<GameObject>();
 
-    [Header("플레이어 프리팹")]
-    [SerializeField] private GameObject playerPrefab;
-
-    [Header("오브젝트 프리팹")]
-    [SerializeField] private List<GameObject> objectPrefab;
-
     [Header("스폰포인트")]
     [SerializeField] private Transform seekerSpawnpoint;
     [SerializeField] private Transform hiderSpawnpoint;
 
+    [Header("각 플레이어 프리팹")]
+    [SerializeField] private GameObject seeker_obj;
+    [SerializeField] private List<GameObject> hider_obj;
+
+
     private HideAndSeekRoomManager roomManager;
+
 
     private void Awake()
     {
@@ -81,8 +81,6 @@ public class GameManager : NetworkBehaviour
 
         if (SceneManager.GetActiveScene().name != System.IO.Path.GetFileNameWithoutExtension(roomManager.GameplayScene)) return;
 
-
-
         if (isServer)
         {
             CheckTimer();
@@ -97,11 +95,14 @@ public class GameManager : NetworkBehaviour
         {
             playerSeek.Add(player);
             player.GetComponent<Player>().Initialize(100, true);  // hp는 100, 이 플레이어는 술래
+            player.GetComponent<Player_Control>().Initiallize_Player(seeker_obj, seekerSpawnpoint);
+            //Initialize_Player 할것
         }
         else
         {
             playerHide.Add(player);
             player.GetComponent<Player>().Initialize(100, false);  // hp는 100, 이 플레이어는 숨는 사람
+            player.GetComponent<Player_Control>().Initiallize_Player(hider_obj[Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
         }
     }
 
@@ -135,7 +136,6 @@ public class GameManager : NetworkBehaviour
     }
 
 
-
     //이 부분은 플레이어의 스폰 위치등을 할당하는 역할을 할 예정
     [Server]
     private void Set_Player(List<GameObject> players, int playerCount, int hp, bool isSeeker)
@@ -152,23 +152,6 @@ public class GameManager : NetworkBehaviour
             player.GetComponent<Player>().Initialize(hp, isSeeker);
             players.Add(player);
         }
-    }
-
-    [Command]
-    public void CmdMorph(GameObject player, int prefabNum)
-    {
-        RpcMorph(player, prefabNum);
-    }
-
-    [ClientRpc]
-    private void RpcMorph(GameObject player, int prefabNum)
-    {
-        GameObject playerBody = player.GetComponent<Player_Control>().player_body;
-        Destroy(playerBody);
-
-        playerBody = Instantiate(objectPrefab[prefabNum], player.transform);
-        playerBody.transform.localPosition = Vector3.zero;
-        playerBody.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
     public void PlayerDied(GameObject player)
