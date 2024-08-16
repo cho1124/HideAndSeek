@@ -20,9 +20,9 @@ public class GameManager : NetworkBehaviour
     [SyncVar] private int hiderSurvivedCount;
 
     [Header("각 플레이어 리스트")]
-    [SyncVar] public List<GameObject> playerSeek = new List<GameObject>();
-    [SyncVar] public List<GameObject> playerHide = new List<GameObject>();
-    [SyncVar] public List<GameObject> deadPlayers = new List<GameObject>();
+    public SyncList<GameObject> playerSeek = new SyncList<GameObject>();
+    public SyncList<GameObject> playerHide = new SyncList<GameObject>();
+    public SyncList<GameObject> deadPlayers = new SyncList<GameObject>();
 
     [Header("스폰포인트")]
     [SerializeField] private Transform seekerSpawnpoint;
@@ -138,7 +138,7 @@ public class GameManager : NetworkBehaviour
 
     //이 부분은 플레이어의 스폰 위치등을 할당하는 역할을 할 예정
     [Server]
-    private void Set_Player(List<GameObject> players, int playerCount, int hp, bool isSeeker)
+    private void Set_Player(SyncList<GameObject> players, int playerCount, int hp, bool isSeeker)
     {
         Transform spawnPoint = isSeeker ? seekerSpawnpoint : hiderSpawnpoint;
 
@@ -191,6 +191,4 @@ public class GameManager : NetworkBehaviour
         Debug.Log(result);
         //게임 종료 화면을 표시하거나, 새로운 씬을 로드할 수 있음
     }
-
-
 }
