@@ -71,12 +71,12 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 
         if (teamId == 1)
         {
-            playerScript.RpcInitializePlayer(hider_obj[UnityEngine.Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
+            //playerScript.RpcInitializePlayer(hider_obj[UnityEngine.Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
             AssignToTeam(player, 1);  // ¼û´Â ÆÀ¿¡ ¹èÁ¤
         }
         else
         {
-            playerScript.RpcInitializePlayer(seeker_obj, seekerSpawnpoint);
+            //playerScript.RpcInitializePlayer(seeker_obj, seekerSpawnpoint);
             AssignToTeam(player, 2);  // Ã£´Â ÆÀ¿¡ ¹èÁ¤
         }
     }

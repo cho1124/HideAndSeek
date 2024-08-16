@@ -143,6 +143,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   teamId: 0
+  testobj: {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
+  testtr: {fileID: 8088152999707955203, guid: 722042b4eea805c4893f4e0c12c7bed7, type: 3}
 --- !u!114 &8723578946939364144
 MonoBehaviour:
   m_ObjectHideFlags: 0

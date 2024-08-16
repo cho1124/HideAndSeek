@@ -13,6 +13,8 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnTeamChanged))]
     public int teamId;
 
+    public GameObject testobj;
+    public Transform testtr;
 
     private void Start()
     {
@@ -20,11 +22,20 @@ public class GamePlayer : NetworkBehaviour
         //GameManager.instance.test_player.Add(gameObject);
         //
         //Debug.Log(nickName);
+        RpcInitializePlayer(testobj, testtr);
     }
 
-    
+    private void OnConnectedToServer()
+    {
+        
+    }
+
+
     public void RpcInitializePlayer(GameObject playerPrefab, Transform spawnPoint)
     {
+
+
+        Debug.Log("init");
 
         if (playerPrefab == null)
         {
