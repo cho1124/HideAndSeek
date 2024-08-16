@@ -7,6 +7,8 @@ using System;
 
 public class HideAndSeekRoomManager : NetworkRoomManager
 {
+    public bool isRoom = true;
+
     public List<GameObject> hiders = new List<GameObject>();
     public List<GameObject> seekers = new List<GameObject>();
 
@@ -18,42 +20,78 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     [SerializeField] private GameObject seeker_obj;
     [SerializeField] private List<GameObject> hider_obj;
 
-    public override void OnRoomServerAddPlayer(NetworkConnectionToClient conn)
+    private void OnApplicationQuit()
     {
-        base.OnRoomServerAddPlayer(conn);
+        if (GamePlayer.isHost)
+        {
+            StopHost();
+        }
+        if (!GamePlayer.isHost)
+        {
+            StopClient();
+        }
+    }
 
-        GameObject roomPlayer = conn.identity.gameObject;
-
+    public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
+    {
         if (Utils.IsSceneActive(RoomScene))
         {
-            // 방 씬에서 대기 중일 때
+            // Room 씬에서 대기
+            PendingPlayer pending;
+            pending.conn = conn;
+            pending.roomPlayer = roomPlayer;
+            pendingPlayers.Add(pending);
+            Debug.Log(pendingPlayers.Count);
             return;
         }
 
-        AssignPlayerToTeam(roomPlayer);
+        GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
+
+        if (gamePlayer == null)
+        {
+            Transform startPos = GetStartPosition();
+            gamePlayer = startPos != null
+                ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
+                : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        }
+
+        AssignPlayerToTeam(gamePlayer);
+
+        if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
+            return;
+
+        NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
     }
 
     private void AssignPlayerToTeam(GameObject player)
     {
-        if (!NetworkServer.active)
-        {
-            Debug.LogWarning("AssignPlayerToTeam은 서버에서만 호출되어야 합니다.");
-            return;
-        }
-
         var playerScript = player.GetComponent<GamePlayer>();
         int teamId = hiders.Count <= seekers.Count ? 1 : 2;
 
+
         if (teamId == 1)
         {
-            playerScript.CmdAssignTeam(1);  // 팀 1로 설정
-            playerScript.CmdInitPlayer(hider_obj[UnityEngine.Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
-            hiders.Add(player);
+            playerScript.RpcInitializePlayer(hider_obj[UnityEngine.Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
+            AssignToTeam(player, 1);  // 숨는 팀에 배정
         }
         else
         {
-            playerScript.CmdAssignTeam(2);  // 팀 2로 설정
-            playerScript.CmdInitPlayer(seeker_obj, seekerSpawnpoint);
+            playerScript.RpcInitializePlayer(seeker_obj, seekerSpawnpoint);
+            AssignToTeam(player, 2);  // 찾는 팀에 배정
+        }
+    }
+
+    private void AssignToTeam(GameObject player, int teamId)
+    {
+        var playerScript = player.GetComponent<GamePlayer>();
+        playerScript.CmdAssignTeam(teamId);
+
+        if (teamId == 1)
+        {
+            hiders.Add(player);
+        }
+        else if (teamId == 2)
+        {
             seekers.Add(player);
         }
     }
@@ -74,5 +112,9 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 
         base.OnRoomServerDisconnect(conn);
     }
-}
 
+    public int GetTeamCount(int teamId)
+    {
+        return teamId == 1 ? hiders.Count : teamId == 2 ? seekers.Count : 0;
+    }
+}
