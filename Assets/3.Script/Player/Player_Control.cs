@@ -55,7 +55,7 @@ public class Player_Control : NetworkBehaviour
         }
     }
 
-    public void Initiallize_Player(GameObject player, Transform spawnPoint)
+    public void Initiallize_Player(GameObject player, Vector3 spawnPoint)
     {
         
         player_body = Instantiate(player);
@@ -67,7 +67,7 @@ public class Player_Control : NetworkBehaviour
 
         player_body.transform.SetParent(gameObject.transform);
         player_body.transform.localPosition = Vector3.zero;
-        gameObject.transform.position = spawnPoint.position;
+        gameObject.transform.position = spawnPoint;
 
     }
 

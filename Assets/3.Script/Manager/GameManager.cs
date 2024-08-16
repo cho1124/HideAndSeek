@@ -72,12 +72,12 @@ public class GameManager : NetworkBehaviour
         if (playerSeek.Count == 0)
         {
             playerSeek.Add(player);
-            player.GetComponent<Player_Control>().Initiallize_Player(seeker_obj, seekerSpawnpoint);
+            //player.GetComponent<Player_Control>().Initiallize_Player(seeker_obj, seekerSpawnpoint);
         }
         else
         {
             playerHide.Add(player);
-            player.GetComponent<Player_Control>().Initiallize_Player(hider_obj[Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
+            //player.GetComponent<Player_Control>().Initiallize_Player(hider_obj[Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
         }
     }
 
