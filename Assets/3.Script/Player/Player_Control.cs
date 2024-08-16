@@ -15,6 +15,7 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
     public float input_cursor_h, input_cursor_v, input_move_h, input_move_v;
+    public bool is_clicked = false;
     public bool input_jump = false;
     public bool is_jumping = false;
     public bool is_ground = false;
@@ -49,10 +50,7 @@ public class Player_Control : NetworkBehaviour
         }
 
         //클릭했을 때 변신하는 거 예시
-        if (Input.GetMouseButtonDown(0))
-        {
-            On_Click();
-        }
+        is_clicked = Input.GetMouseButtonDown(0);
     }
 
     public void Initiallize_Player(GameObject player, Vector3 spawnPoint)
@@ -78,6 +76,11 @@ public class Player_Control : NetworkBehaviour
 
         Player_Move(input_move_h, input_move_v, input_jump);
         Player_Rotate(input_cursor_h, input_cursor_v);
+
+        if (is_clicked)
+        {
+            Morph();
+        }
     }
 
     private void Player_Move(float move_h, float move_v, bool input_jump)
@@ -132,7 +135,7 @@ public class Player_Control : NetworkBehaviour
         main_camera.transform.LookAt(anchor_transform.position);
     }
 
-    private void On_Click()
+    private void Morph()
     { 
         RaycastHit hit = new RaycastHit();
         Physics.Raycast(new Ray(anchor_transform.position, anchor_transform.forward), out hit, 10f);
