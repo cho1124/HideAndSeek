@@ -22,7 +22,7 @@ public class GamePlayer : NetworkBehaviour
         //Debug.Log(nickName);
     }
 
-    [ClientRpc]
+    
     public void RpcInitializePlayer(GameObject playerPrefab, Transform spawnPoint)
     {
 
@@ -40,7 +40,7 @@ public class GamePlayer : NetworkBehaviour
     }
 
    
-    [Command]
+    
     public void CmdAssignTeam(int newTeamId)
     {
         Debug.Log("assigned!");
