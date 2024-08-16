@@ -1543,6 +1543,7 @@ MonoBehaviour:
   _allPlayersReady: 0
   gamePlayer_list: []
   clientIndex: 0
+  isRoom: 1
   hiders: []
   seekers: []
   seekerSpawnpoint: {fileID: 719183382977230162, guid: d62f1f6ea93918a4fb56a3b9f438e878, type: 3}
