@@ -7,17 +7,24 @@ using System;
 
 public class HideAndSeekRoomManager : NetworkRoomManager
 {
-    string hostIP;
-    string nickName;
     public bool isRoom = true;
+
+    public List<GameObject> hiders = new List<GameObject>();
+    public List<GameObject> seekers = new List<GameObject>();
+
+    [Header("스폰포인트")]
+    [SerializeField] private Transform seekerSpawnpoint;
+    [SerializeField] private Transform hiderSpawnpoint;
+
+    [Header("각 플레이어 프리팹")]
+    [SerializeField] private GameObject seeker_obj;
+    [SerializeField] private List<GameObject> hider_obj;
 
     private void OnApplicationQuit()
     {
         if (GamePlayer.isHost)
         {
-
             StopHost();
-
         }
         if (!GamePlayer.isHost)
         {
@@ -25,12 +32,11 @@ public class HideAndSeekRoomManager : NetworkRoomManager
         }
     }
 
-
     public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
     {
         if (Utils.IsSceneActive(RoomScene))
         {
-            // cant be ready in room, add to ready list
+            // Room 씬에서 대기
             PendingPlayer pending;
             pending.conn = conn;
             pending.roomPlayer = roomPlayer;
@@ -39,42 +45,76 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             return;
         }
 
-        GameObject gamePlayer;
-
-        gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
+        GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
 
         if (gamePlayer == null)
         {
-            //Debug.Log("gamePlayer");
-
-            // get start position from base class
             Transform startPos = GetStartPosition();
-
-
-            //startPos.position = new Vector3(0, 5f, 0);
-
             gamePlayer = startPos != null
                 ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
                 : Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-
-            //Debug.Log(gamePlayer.transform.position);
-
-            //Debug.Log(SceneManager.GetActiveScene().name);
-            //GameManager.instance.playerSeek.Add(gamePlayer);
-            GameManager.instance.AddPlayerToGame(gamePlayer);
         }
+
+        AssignPlayerToTeam(gamePlayer);
 
         if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
             return;
 
-        // replace room player with game player
-
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
-
-        //AddPlayerToGameManager(gamePlayer_list);
     }
 
+    private void AssignPlayerToTeam(GameObject player)
+    {
+        var playerScript = player.GetComponent<GamePlayer>();
+        int teamId = hiders.Count <= seekers.Count ? 1 : 2;
 
-    // 게임 매니저에 플레이어를 추가하는 메서드
-    
+
+        if (teamId == 1)
+        {
+            playerScript.RpcInitializePlayer(hider_obj[UnityEngine.Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
+            AssignToTeam(player, 1);  // 숨는 팀에 배정
+        }
+        else
+        {
+            playerScript.RpcInitializePlayer(seeker_obj, seekerSpawnpoint);
+            AssignToTeam(player, 2);  // 찾는 팀에 배정
+        }
+    }
+
+    private void AssignToTeam(GameObject player, int teamId)
+    {
+        var playerScript = player.GetComponent<GamePlayer>();
+        playerScript.CmdAssignTeam(teamId);
+
+        if (teamId == 1)
+        {
+            hiders.Add(player);
+        }
+        else if (teamId == 2)
+        {
+            seekers.Add(player);
+        }
+    }
+
+    public override void OnRoomServerDisconnect(NetworkConnectionToClient conn)
+    {
+        GameObject player = conn.identity.gameObject;
+        GamePlayer playerScript = player.GetComponent<GamePlayer>();
+
+        if (playerScript.teamId == 1)
+        {
+            hiders.Remove(player);
+        }
+        else if (playerScript.teamId == 2)
+        {
+            seekers.Remove(player);
+        }
+
+        base.OnRoomServerDisconnect(conn);
+    }
+
+    public int GetTeamCount(int teamId)
+    {
+        return teamId == 1 ? hiders.Count : teamId == 2 ? seekers.Count : 0;
+    }
 }

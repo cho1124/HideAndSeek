@@ -160,7 +160,7 @@ namespace Mirror
                 //Debug.Log(gamePlayer.transform.position);
 
                 //Debug.Log(SceneManager.GetActiveScene().name);
-                gamePlayer_list.Add(gamePlayer);
+                //gamePlayer_list.Add(gamePlayer);
             }
 
             if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))

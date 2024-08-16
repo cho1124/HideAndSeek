@@ -39,7 +39,7 @@ public class MainMenuControl : MonoBehaviour
             //roomManager.StartHost();
             roomManager.StartHost();
             //SceneManager.LoadScene("Room Scene");
-            SceneManager.LoadScene(SceneName);
+            //SceneManager.LoadScene(SceneName);
         }
         // host ����
 
@@ -60,7 +60,7 @@ public class MainMenuControl : MonoBehaviour
             var roomManager = HideAndSeekRoomManager.singleton;
             roomManager.networkAddress = GamePlayer.connectToIp;
             roomManager.StartClient();
-            SceneManager.LoadScene("Room Scene");
+            //SceneManager.LoadScene(SceneName);
         }
     }
 }

@@ -57,10 +57,18 @@ public class Player_Control : NetworkBehaviour
 
     public void Initiallize_Player(GameObject player, Transform spawnPoint)
     {
+        
         player_body = Instantiate(player);
+
+        if(player_body == null)
+        {
+            Debug.LogError("player body is null");
+        }
+
         player_body.transform.SetParent(gameObject.transform);
         player_body.transform.localPosition = Vector3.zero;
         gameObject.transform.position = spawnPoint.position;
+
     }
 
 

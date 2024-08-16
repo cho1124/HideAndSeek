@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: -913892779826645643}
   - component: {fileID: 8723578946939364144}
   - component: {fileID: 7845623374730717735}
+  - component: {fileID: 2228953579943616146}
+  - component: {fileID: -4455981958461812941}
   m_Layer: 0
   m_Name: siball
   m_TagString: Untagged
@@ -118,6 +120,13 @@ MonoBehaviour:
   player_body: {fileID: 0}
   move_speed: 5
   jump_speed: 10
+  input_cursor_h: 0
+  input_cursor_v: 0
+  input_move_h: 0
+  input_move_v: 0
+  input_jump: 0
+  is_jumping: 0
+  is_ground: 0
 --- !u!114 &-913892779826645643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +142,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  teamId: 0
 --- !u!114 &8723578946939364144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +191,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   is_dead: 0
   is_seeker: 0
+--- !u!114 &2228953579943616146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515636503463055878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2576730625b1632468cbcbfe5e721f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _teamId: 
+  forceShown: 1
+--- !u!114 &-4455981958461812941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515636503463055878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 7088778927070006016}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
 --- !u!1 &7849846510720317987
 GameObject:
   m_ObjectHideFlags: 0
