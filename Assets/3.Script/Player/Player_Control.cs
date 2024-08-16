@@ -10,6 +10,8 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
 
+    public static float mouse_speed = 0; // 마우스 감도
+
     public GameObject player_body;
     
     [SerializeField] float move_speed = 5f;
@@ -39,8 +41,8 @@ public class Player_Control : NetworkBehaviour
         //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
         input_move_h = Input.GetAxisRaw("Horizontal");
         input_move_v = Input.GetAxisRaw("Vertical");
-        input_cursor_h = Input.GetAxis("Mouse X");
-        input_cursor_v = Input.GetAxis("Mouse Y");
+        input_cursor_h = Input.GetAxis("Mouse X") * (int)mouse_speed;
+        input_cursor_v = Input.GetAxis("Mouse Y") * (int)mouse_speed;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             StopCoroutine(Jump_Co());
