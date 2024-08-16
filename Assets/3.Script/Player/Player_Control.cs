@@ -159,6 +159,7 @@ public class Player_Control : NetworkBehaviour
     {
         is_jumping = true;
         yield return new WaitForSeconds(0.2f);
+        SoundManager.instance.PlaySFX("Jump");
         is_jumping = false;
     }
 

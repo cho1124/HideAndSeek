@@ -157,14 +157,14 @@ namespace SlimUI.ModernMenu{
 		public void HostButton()
         {
 			Debug.Log("방 이동");
-
+			SoundManager.instance.PlaySFX("Click");
 			SceneManager.LoadScene("WaitingRoom");
         }
 
 		public void ExitButton()
         {
 			CameraObject.Play("CameraExitAM", 0, 0);
-
+			SoundManager.instance.PlaySFX("Click");
 			StartCoroutine(CameraExitAM_IE());
         }
 

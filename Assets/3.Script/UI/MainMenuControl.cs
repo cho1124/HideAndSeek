@@ -18,6 +18,8 @@ public class MainMenuControl : MonoBehaviour
 
     void Start()
     {
+        SoundManager.instance.PlayBGM("Lobby");
+
         for (int i = 0; i < hide_objs.Length; i++)
         {
             hide_objs[i].SetActive(false);

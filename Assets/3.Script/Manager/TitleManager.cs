@@ -16,15 +16,18 @@ public class TitleManager : MonoBehaviour
     }
     public void HostBtn()
     {
+        SoundManager.instance.PlaySFX("Click");
         HostPanel.SetActive(true);
     }
 
     public void ClientBtn()
     {
+        SoundManager.instance.PlaySFX("Click");
         ClientPanel.SetActive(true);
     }
     public void ExitBtn()
     {
+        SoundManager.instance.PlaySFX("Click");
         Application.Quit();
     }
 
