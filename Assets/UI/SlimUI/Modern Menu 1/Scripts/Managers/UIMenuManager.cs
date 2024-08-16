@@ -8,8 +8,10 @@ using UnityEngine.SceneManagement;
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 
-		[SerializeField] private OnOff onoff = null;
 		[SerializeField] private Slider sound_slider = null;
+		[SerializeField] private OnOff onoff = null;
+		[SerializeField] private GameObject mouse_cursor = null;
+		[SerializeField] private Animator mouse_cursor_ar = null;
 
 		private Animator CameraObject;
 
@@ -161,19 +163,25 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
-		IEnumerator CameraExitAM_IE()
-        {
-			yield return new WaitForSeconds(3f);
-
-			QuitGame();
-        }
-
 		public void HostButton()
         {
 			Debug.Log("방 이동");
 
 			SceneManager.LoadScene("WaitingRoom");
         }
+
+		IEnumerator CameraExitAM_IE()
+		{
+			yield return new WaitForSeconds(3f);
+
+			mouse_cursor.SetActive(true);
+
+			mouse_cursor_ar.Play("MouseCursorAM");
+
+			yield return new WaitForSeconds(3f);
+
+			QuitGame();
+		}
 
 		public void ExitButton()
         {
