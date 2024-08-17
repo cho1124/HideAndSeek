@@ -85,13 +85,13 @@ MonoBehaviour:
   anchor_transform: {fileID: 6923442859119991666}
   player_prefab: {fileID: 5353795593500070946, guid: f81f2c3384484dd498000d9dd8274dbb, type: 3}
   main_camera: {fileID: 0}
-  player_body: {fileID: 0}
   move_speed: 5
   jump_speed: 10
   input_cursor_h: 0
   input_cursor_v: 0
   input_move_h: 0
   input_move_v: 0
+  is_clicked: 0
   input_jump: 0
   is_jumping: 0
   is_ground: 0
