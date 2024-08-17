@@ -2,17 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
-
-		[SerializeField] private Slider sound_slider = null;
-		[SerializeField] private OnOff onoff = null;
-		[SerializeField] private GameObject mouse_cursor = null;
-		[SerializeField] private Animator mouse_cursor_ar = null;
-
 		private Animator CameraObject;
 
 		// campaign button sub menu
@@ -80,23 +73,14 @@ namespace SlimUI.ModernMenu{
 		public KeyCode userPromptKey;
 
 		[Header("SFX")]
-		[Tooltip("The GameObject holding the Audio Source component for the HOVER SOUND")]
-		public AudioSource master_sound;
+        [Tooltip("The GameObject holding the Audio Source component for the HOVER SOUND")]
+        public AudioSource hoverSound;
         [Tooltip("The GameObject holding the Audio Source component for the AUDIO SLIDER")]
         public AudioSource sliderSound;
         [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
         public AudioSource swooshSound;
 
 		void Start(){
-
-			master_sound.Play();
-
-			//////////////////// 동기화 ////////////////////
-
-			onoff.SetResolution(1920, 1080, true);
-			master_sound.volume = PlayerPrefs.GetFloat("Master volume");
-			sound_slider.value = PlayerPrefs.GetFloat("Master volume");
-
 			CameraObject = transform.GetComponent<Animator>();
 
 			// playMenu.SetActive(false);
@@ -163,25 +147,19 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
+		IEnumerator CameraExitAM_IE()
+        {
+			yield return new WaitForSeconds(3f);
+
+			QuitGame();
+        }
+
 		public void HostButton()
         {
 			Debug.Log("방 이동");
 
 			SceneManager.LoadScene("WaitingRoom");
         }
-
-		IEnumerator CameraExitAM_IE()
-		{
-			yield return new WaitForSeconds(3f);
-
-			mouse_cursor.SetActive(true);
-
-			mouse_cursor_ar.Play("MouseCursorAM");
-
-			yield return new WaitForSeconds(3f);
-
-			QuitGame();
-		}
 
 		public void ExitButton()
         {
@@ -285,11 +263,8 @@ namespace SlimUI.ModernMenu{
 			lineGeneral.SetActive(true);
 		}
 
-		public void MasterSound()
-		{
-			master_sound.volume = sound_slider.value;
-
-			PlayerPrefs.SetFloat("Master volume", master_sound.volume);
+		public void PlayHover(){
+			hoverSound.Play();
 		}
 
 		public void PlaySFXHover(){
