@@ -39,6 +39,9 @@ public class Lovely_Hammer : MonoBehaviour
                 victim_dictionary[victim.gameObject] = true;
                 //부모한테 보낼지 아니면 여기서 피격 처리할지
                 Debug.Log("요놈잡았다");
+
+                // GameManager를 통해 플레이어 사망 처리
+                GameManager.instance.PlayerDied(victim.gameObject);
             }
         }
     }
