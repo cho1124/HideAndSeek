@@ -5,7 +5,7 @@ using UnityEngine;
 public class Animation_Control : MonoBehaviour
 {
     /*
-    Attack 파라메터 bool->trigger 변경했습니다...trigger가 더 직관적이라 개인적으로 사용하기 좋아서요,,,
+
     */
 
 
@@ -27,7 +27,10 @@ public class Animation_Control : MonoBehaviour
     {
         // 공격 상태에서의 처리
         if (player_control.is_clicked) {
-            On_Attack();
+            animator.SetBool("Attack", true);
+        }
+        else {
+            animator.SetBool("Attack", false);
         }
 
         move_h = Mathf.Lerp(move_h, player_control.input_move_h, 0.1f);
@@ -38,12 +41,6 @@ public class Animation_Control : MonoBehaviour
         animator.SetBool("Is_Jumping", player_control.is_jumping);
         animator.SetBool("Is_Ground", player_control.is_ground);
 
-    }
-
-    public void On_Attack()
-    {
-        // 이 메서드는 공격 애니메이션이 시작될 때 호출됩니다.
-        animator.SetTrigger("Attack");
     }
 
     // 애니메이션 이벤트를 사용해 콜라이더를 켜고 끄는 메서드 Stable Sword Outward Slash 애니메이터에 이벤트 추가해둠
