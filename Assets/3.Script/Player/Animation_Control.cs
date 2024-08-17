@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Animation_Control : MonoBehaviour
 {
+    /*
+    Attack 파라메터 bool->trigger 변경했습니다...trigger가 더 직관적이라 개인적으로 사용하기 좋아서요,,,
+    */
+
+
     [SerializeField] private Animator animator;
     [SerializeField] private Player_Control player_control;
     [SerializeField] GameObject Hammer;
+    private Lovely_Hammer lovely_hammer;
     private float move_h = 0f;
     private float move_v = 0f;
 
@@ -14,11 +20,15 @@ public class Animation_Control : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player_control = GetComponentInParent<Player_Control>();
+        lovely_hammer = Hammer.GetComponent<Lovely_Hammer>();  // Hammer 오브젝트에 붙어있는 Lovely_Hammer 스크립트를 가져옴
     }
 
     private void FixedUpdate()
     {
-        animator.SetBool("Attack", false);
+        // 공격 상태에서의 처리
+        if (player_control.is_clicked) {
+            On_Attack();
+        }
 
         move_h = Mathf.Lerp(move_h, player_control.input_move_h, 0.1f);
         move_v = Mathf.Lerp(move_v, player_control.input_move_v, 0.1f);
@@ -28,11 +38,20 @@ public class Animation_Control : MonoBehaviour
         animator.SetBool("Is_Jumping", player_control.is_jumping);
         animator.SetBool("Is_Ground", player_control.is_ground);
 
-        animator.SetBool("Attack", player_control.is_clicked);
     }
 
     public void On_Attack()
     {
-        //여기서 상대의 피격 메소드 호출
+        // 이 메서드는 공격 애니메이션이 시작될 때 호출됩니다.
+        animator.SetTrigger("Attack");
+    }
+
+    // 애니메이션 이벤트를 사용해 콜라이더를 켜고 끄는 메서드 Stable Sword Outward Slash 애니메이터에 이벤트 추가해둠
+    public void EnableCollider() {
+        lovely_hammer.Collider_On();
+    }
+
+    public void DisableCollider() {
+        lovely_hammer.Collider_Off();
     }
 }
