@@ -1,14 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Mirror;
 using TMPro;
 
 public class RoomScript : NetworkBehaviour
 {
     public TMP_Text roomPlayersText;
-    
+
+    //private NetworkManager roomManager;
+
+
+
     private void Awake()
     {
-        var roomManager = HideAndSeekRoomManager.singleton;
+        //roomManager = HideAndSeekRoomManager.singleton;
     }
 
     private void Update()
@@ -19,6 +24,7 @@ public class RoomScript : NetworkBehaviour
     void UpdateRoomText()
     {
         // ���� �÷��̾� ��
+        
         var curPlayers = FindObjectsOfType<HideAndSeekRoomPlayer>(); //���̤��Ƥ����Ƥää̤��������Ӥ̤����Ӥ���
         roomPlayersText.text = string.Format($"Player: {curPlayers.Length} / 5");
     }
@@ -37,7 +43,9 @@ public class RoomScript : NetworkBehaviour
         if (!GamePlayer.isHost)
         {
             HideAndSeekRoomManager.singleton.StopClient();
+
         }
+        //SceneManager.LoadScene("Lobby");
 
     }
 

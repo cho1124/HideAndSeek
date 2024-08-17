@@ -120,19 +120,22 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 
     public override void OnRoomServerDisconnect(NetworkConnectionToClient conn)
     {
-        GameObject player = conn.identity.gameObject;
-        GamePlayer playerScript = player.GetComponent<GamePlayer>();
-
-        if (playerScript.teamId == 1)
+        if (SceneManager.GetActiveScene().name.Equals("Map_v1"))
         {
-            hiders.Remove(player);
-        }
-        else if (playerScript.teamId == 2)
-        {
-            seekers.Remove(player);
-        }
+            GameObject player = conn.identity.gameObject;
+            GamePlayer playerScript = player.GetComponent<GamePlayer>();
 
-        base.OnRoomServerDisconnect(conn);
+            if (playerScript.teamId == 1)
+            {
+                hiders.Remove(player);
+            }
+            else if (playerScript.teamId == 2)
+            {
+                seekers.Remove(player);
+            }
+
+            base.OnRoomServerDisconnect(conn);
+        }
     }
 
     public int GetTeamCount(int teamId)
