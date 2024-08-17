@@ -10,7 +10,7 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
 
-    public GameObject player_body;
+    
     
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
@@ -53,21 +53,7 @@ public class Player_Control : NetworkBehaviour
         is_clicked = Input.GetMouseButtonDown(0);
     }
 
-    public void Initiallize_Player(GameObject player, Transform spawnPoint)
-    {
-        
-        player_body = Instantiate(player);
-
-        if(player_body == null)
-        {
-            Debug.LogError("player body is null");
-        }
-
-        player_body.transform.SetParent(gameObject.transform);
-        player_body.transform.localPosition = Vector3.zero;
-        gameObject.transform.position = spawnPoint.position;
-
-    }
+    
 
 
     private void FixedUpdate()

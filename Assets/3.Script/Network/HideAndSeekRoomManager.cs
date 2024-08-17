@@ -9,16 +9,26 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 {
     public bool isRoom = true;
 
-    public List<GameObject> hiders = new List<GameObject>();
-    public List<GameObject> seekers = new List<GameObject>();
+    private List<GameObject> hiders = new List<GameObject>();
+    private List<GameObject> seekers = new List<GameObject>();
 
     [Header("스폰포인트")]
-    [SerializeField] private Transform seekerSpawnpoint;
-    [SerializeField] private Transform hiderSpawnpoint;
+    public Transform seekerSpawnpoint;
+    public Transform hiderSpawnpoint;
 
     [Header("각 플레이어 프리팹")]
-    [SerializeField] private GameObject seeker_obj;
-    [SerializeField] private List<GameObject> hider_obj;
+    public GameObject seeker_obj;
+    public List<GameObject> hider_obj;
+
+    [Header("술래 카운트")]
+    [SerializeField] private int seeker_count = 1;
+    private int member_count;
+
+    public override void OnStartServer()
+    {
+        member_count = 0;
+    }
+
 
     private void OnApplicationQuit()
     {
@@ -61,13 +71,26 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             return;
 
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
+        
+        
     }
 
     private void AssignPlayerToTeam(GameObject player)
     {
         var playerScript = player.GetComponent<GamePlayer>();
-        int teamId = hiders.Count <= seekers.Count ? 1 : 2;
 
+        int teamId = 1;
+
+        // Check if the seekers count is less than seeker_count
+        if (seekers.Count < seeker_count)
+        {
+            if (UnityEngine.Random.Range(0, 2) == 0 || member_count == NetworkServer.connections.Count - 1)
+            {
+                teamId = 2;
+            }
+        }
+
+        member_count++;
 
         if (teamId == 1)
         {
