@@ -1,57 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using TMPro;
 using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
-
-    public static GameManager instance = null;
-
     [Header("흐름처리")]
+    [SyncVar(hook = nameof(ChangeHookTimer))]
     public float timer = 180f;
     private bool isGameOver = false;
 
-    [Header("각 플레이어 리스트")]
-    public List<GameObject> playerSeek = new List<GameObject>();
-    public List<GameObject> playerHide = new List<GameObject>();
-    public List<GameObject> deadPlayers = new List<GameObject>();
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI Timer_UI;
+    [SerializeField] private GameObject timerUI;
 
-    [Header("스폰포인트")]
-    [SerializeField] private Transform seekerSpawnpoint;
-    [SerializeField] private Transform hiderSpawnpoint;
-
-    [Header("각 플레이어 프리팹")]
-    [SerializeField] private GameObject seeker_obj;
-    [SerializeField] private List<GameObject> hider_obj;
-
-    private void Awake()
+    
+    private void Start()
     {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        
+        timerUI = GameObject.Find("Timer UI");
+        Timer_UI = timerUI.GetComponent<TextMeshProUGUI>();
         InitializeGame();
     }
 
-
+    [Server]
     private void InitializeGame()
     {
-        
-
         // 초기화 로직 (예: 게임 시작 시 플레이어 초기화, 타이머 설정 등)
         Time.timeScale = 1;
         timer = 180f;
@@ -60,28 +34,10 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name != "GameplayScene") return;
-
         CheckTimer();
     }
 
-    
-    public void AddPlayerToGame(GameObject player)
-    {
-        // 플레이어를 술래 또는 숨는 사람으로 분배
-        if (playerSeek.Count == 0)
-        {
-            playerSeek.Add(player);
-            //player.GetComponent<Player_Control>().Initiallize_Player(seeker_obj, seekerSpawnpoint);
-        }
-        else
-        {
-            playerHide.Add(player);
-            //player.GetComponent<Player_Control>().Initiallize_Player(hider_obj[Random.Range(0, hider_obj.Count)], hiderSpawnpoint);
-        }
-    }
-
-    
+    [Server]
     private void CheckTimer()
     {
         if (timer <= 0 && !isGameOver)
@@ -92,40 +48,22 @@ public class GameManager : NetworkBehaviour
         else
         {
             timer -= Time.deltaTime;
+            Debug.Log($"Server: Timer updated to {timer}"); // 서버 로그 추가
         }
     }
 
-    
-    public void PlayerDied(GameObject player)
+    private void ChangeHookTimer(float oldvalue, float newvalue)
     {
-        if (playerSeek.Contains(player))
-        {
-            playerSeek.Remove(player);
-        }
-        else if (playerHide.Contains(player))
-        {
-            playerHide.Remove(player);
-        }
-
-        deadPlayers.Add(player);
-
-        CheckGameEndCondition(); // 게임 종료 조건 체크
+        Debug.Log("timer : " + newvalue);
+        UpdateTimerUI(newvalue); // 타이머 값이 변경될 때 UI 업데이트
     }
 
-    
-    private void CheckGameEndCondition()
+    private void UpdateTimerUI(float time)
     {
-        if (playerSeek.Count == 0)
-        {
-            RpcGameOver("Hider Win!"); // 술래 팀이 전멸하면 숨는 팀 승리
-        }
-        else if (playerHide.Count == 0)
-        {
-            RpcGameOver("Seeker Win!"); // 숨는 팀이 전멸하면 술래 팀 승리
-        }
+        Timer_UI.text = ((int)time).ToString(); // 타이머를 정수로 변환하여 텍스트 업데이트
+        Debug.Log("sync!");
     }
 
-    
     private void RpcGameOver(string result)
     {
         Debug.Log(result);

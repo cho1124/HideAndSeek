@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private int hp_current;
     public bool is_dead = false;
     public bool is_seeker = false;
-    private GameManager gameManager;
+    //private GameManager gameManager;
 
     private void Start()
     {

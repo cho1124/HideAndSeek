@@ -44,6 +44,7 @@ public class HideAndSeekRoomManager : NetworkRoomManager
 
     public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
     {
+        
         if (Utils.IsSceneActive(RoomScene))
         {
             // Room ¾À¿¡¼­ ´ë±â
@@ -55,6 +56,8 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             return;
         }
 
+        GameObject spawnedObject = Instantiate(spawnPrefabs[0]);
+        NetworkServer.Spawn(spawnedObject);
         GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
 
         if (gamePlayer == null)
