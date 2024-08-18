@@ -3,35 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-
-public struct Client_Input
-{
-    public float cursor_h;
-    public float cursor_v;
-    public float move_h;
-    public float move_v;
-    public bool is_clicked;
-    public bool jump;
-
-    public Client_Input(float input_cursor_h, float input_cursor_v, float input_move_h, float input_move_v, bool is_clicked, bool jump)
-    {
-        cursor_h = input_cursor_h;
-        cursor_v = input_cursor_v;
-        move_h = input_move_h;
-        move_v = input_move_v;
-        this.is_clicked = is_clicked;
-        this.jump = jump;
-    }
-}
-
 public class Player_Control : NetworkBehaviour
 {
+    [SerializeField] private NetworkTeam team;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
-    [SerializeField] public Animator player_ani;
-    [SerializeField] private NetworkIdentity net_ID;
+    [SerializeField] public GameObject hand;
 
 
     [SerializeField] float move_speed = 5f;
@@ -43,111 +22,86 @@ public class Player_Control : NetworkBehaviour
     public bool is_jumping = false;
     public bool is_ground = false;
 
-    private float move_h = 0f;
-    private float move_v = 0f;
-    private Vector3 last_contact = new Vector3();
+    public bool is_swing = false;
 
     private Vector3 velocity_h = Vector3.zero;
     private Vector3 velocity_v = Vector3.zero;
     private Coroutine jumpCoroutine;
 
-    Client_Input input;
+    [Header("팀 id")]
+    [SerializeField] private int TeamID;
+    [SerializeField] private GamePlayer game_player;
 
 
     void Start()
     {
+        game_player = GetComponent<GamePlayer>();
+        TeamID = game_player.teamId;
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
         main_camera = GameObject.Find("Main_Camera");
 
-        if (!player_ani)
-        {
-            player_ani = GetComponent<Animator>();
-        }
+        Debug.Log("chid Count : " + transform.childCount);
+
+
+        if (TeamID == 1) gameObject.tag = "Player_Hide";
     }
 
     void Update()
     {
-        if (isLocalPlayer)
-        {
-            //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
-            input_move_h = Input.GetAxisRaw("Horizontal");
-            input_move_v = Input.GetAxisRaw("Vertical");
-            input_cursor_h = Input.GetAxis("Mouse X");
-            input_cursor_v = Input.GetAxis("Mouse Y");
-
-            if (Input.GetKeyDown(KeyCode.Space) && jumpCoroutine == null)
-            {
-                jumpCoroutine = StartCoroutine(Jump_Co());
-            }
-
-
-
-            is_clicked = Input.GetMouseButtonDown(0);
-            if (net_ID != null) Input_CMD(net_ID, input);
-
-        }
-
+        if (!isLocalPlayer) return;
         
-        Player_MoveAni();
+        //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
+        input_move_h = Input.GetAxisRaw("Horizontal");
+        input_move_v = Input.GetAxisRaw("Vertical");
+        input_cursor_h = Input.GetAxis("Mouse X");
+        input_cursor_v = Input.GetAxis("Mouse Y");
+
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCoroutine == null)
+        {
+            jumpCoroutine = StartCoroutine(Jump_Co());
+        }
+        is_clicked = Input.GetMouseButtonDown(0);
     }
 
     private void FixedUpdate()
     {
         if (isLocalPlayer)
         {
-            if (is_clicked)
-            {
-                Morph();
-            }
-
             Player_Move(input_move_h, input_move_v, input_jump);
             Player_Rotate(input_cursor_h, input_cursor_v);
         }
 
-        
-    }
-
-    [Command]
-    public void Input_CMD(NetworkIdentity net_ID, Client_Input input)
-    {
-        if (net_ID != null && !input.Equals(null)) Input_RPC(net_ID, input);
-    }
-
-    [ClientRpc]
-    public void Input_RPC(NetworkIdentity net_ID, Client_Input input)
-    {
-        if (this.net_ID.netId == net_ID.netId)
+        if (is_clicked)
         {
-            input_move_h = input.move_h;
-            input_move_v = input.move_v;
-            input_cursor_h = input.cursor_h;
-            input_cursor_v = input.cursor_v;
-            if (input.jump)
+            if (TeamID == 2 && !is_swing)
             {
-                StopCoroutine(Jump_Co());
-                StartCoroutine(Jump_Co());
+                if (hand != null)
+                {
+                    CmdSwingHammer();  // 서버에 명령을 전달
+                }
             }
-            is_clicked = input.is_clicked;
+            else
+            {
+                Morph();
+            }
         }
     }
 
-
-    private void Player_MoveAni()
+    [Command]
+    void CmdSwingHammer()
     {
-        if (player_ani == null) return;
+        RpcSwingHammer();  // 모든 클라이언트에게 브로드캐스트
+    }
 
-        player_ani.SetBool("Attack", false);
-
-        move_h = Mathf.Lerp(move_h, input_move_h, 0.1f);
-        move_v = Mathf.Lerp(move_v, input_move_v, 0.1f);
-
-        player_ani.SetFloat("Velocity_X", move_h);
-        player_ani.SetFloat("Velocity_Y", move_v);
-        player_ani.SetBool("Is_Jumping", is_jumping);
-        player_ani.SetBool("Is_Ground", is_ground);
-
-        player_ani.SetBool("Attack", is_clicked);
+    [ClientRpc]
+    void RpcSwingHammer()
+    {
+        if (hand != null && !is_swing)
+        {
+            StopCoroutine(Hammer_Swing_Co());
+            StartCoroutine(Hammer_Swing_Co());
+        }
     }
 
     private void Player_Move(float move_h, float move_v, bool input_jump)
@@ -161,15 +115,8 @@ public class Player_Control : NetworkBehaviour
             is_ground = false;
             StartCoroutine(Jumping_Co());
         }
-        else if (is_ground && !is_jumping)
-        {
-            velocity_v = Vector3.zero;
-        }
-        else
-        {
-            velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
-        }
-
+        else if (is_ground && !is_jumping) velocity_v = Vector3.zero;
+        else velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
         rb.velocity = velocity_h + velocity_v;
     }
 
@@ -234,5 +181,32 @@ public class Player_Control : NetworkBehaviour
         yield return new WaitForSeconds(0.1f);
         input_jump = false;
         jumpCoroutine = null;
+    }
+
+    private IEnumerator Hammer_Swing_Co()
+    {
+        WaitForSeconds wait_for_1_fixed = new WaitForSeconds(1/50f);
+        float fixed_count = 0f;
+
+        is_swing = true;
+        hand.GetComponent<Lovely_Hammer>().Collider_On();
+        while (fixed_count < 25f)
+        {
+            fixed_count += 1f;
+            hand.transform.localEulerAngles = new Vector3(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
+            yield return wait_for_1_fixed;
+        }
+
+        fixed_count = 0f;
+        while (fixed_count < 25f)
+        {
+            fixed_count += 1f;
+            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count/25f, hand.transform.localRotation.z - 90f * fixed_count/25f);
+            yield return wait_for_1_fixed;
+        }
+
+        hand.transform.localEulerAngles = Vector3.zero;
+        is_swing = false;
+        hand.GetComponent<Lovely_Hammer>().Collider_Off();
     }
 }

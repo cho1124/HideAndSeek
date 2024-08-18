@@ -113,8 +113,7 @@ public class GamePlayer : NetworkBehaviour
             Debug.Log("player_body" + player_body.name);
             transform.position = room_manager.seekerSpawnpoint.position;
             Player_Control playercon = GetComponent<Player_Control>();
-            playercon.player_ani = player_body.GetComponent<Animator>();
-
+            playercon.hand = player_body.transform.Find("Hand").gameObject;
 
         }
 
@@ -145,13 +144,13 @@ public class GamePlayer : NetworkBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log(damage);
         OnHealthChanged?.Invoke(hp_current);
         hp_current -= damage;
         if (hp_current <= 0)
         {
             Die();
         }
-
     }
 
     public void Die() 
@@ -170,7 +169,4 @@ public class GamePlayer : NetworkBehaviour
     #endif
         }
     }
-
-
-
 }

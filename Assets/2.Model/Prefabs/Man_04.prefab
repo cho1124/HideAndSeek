@@ -349,8 +349,6 @@ GameObject:
   - component: {fileID: 2189165697742768765}
   - component: {fileID: 5224551939979628551}
   - component: {fileID: 8693435989057570476}
-  - component: {fileID: -854223348618891609}
-  - component: {fileID: -6585877730719550891}
   m_Layer: 0
   m_Name: Man_04
   m_TagString: Untagged
@@ -435,41 +433,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &-854223348618891609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525218576529477831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1131b14d7ce5bc5449ff5fd99a782c4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  animator: {fileID: 5224551939979628551}
-  player_control: {fileID: 0}
-  Hammer: {fileID: 2688742490059214092}
---- !u!114 &-6585877730719550891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525218576529477831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 3998721318
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!1 &1541317550249371662
 GameObject:
   m_ObjectHideFlags: 0
@@ -3715,7 +3678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hammer_collider: {fileID: 98621815957229533}
   self: {fileID: 1525218576529477831}
-  animation_control: {fileID: -854223348618891609}
+  animation_control: {fileID: 0}
 --- !u!4 &3052287385113342524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5980805143497354725, guid: 6dbff7dc395756c4fac6090f1b093db8, type: 3}
