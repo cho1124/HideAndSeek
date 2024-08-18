@@ -146,9 +146,21 @@ public class GamePlayer : NetworkBehaviour
 
     }
 
-    public void Die()
+    public void Die() 
     {
         is_dead = true;
+
+        // 게임 종료 로직 추가
+        if (isLocalPlayer) 
+        {
+            // 빌드된 애플리케이션에서는 종료
+            Application.Quit();
+
+    #if UNITY_EDITOR
+            // 유니티 에디터에서는 플레이 모드를 종료
+            UnityEditor.EditorApplication.isPlaying = false;
+    #endif
+        }
     }
 
 
