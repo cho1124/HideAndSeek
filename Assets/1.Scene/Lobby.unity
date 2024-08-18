@@ -1546,6 +1546,8 @@ MonoBehaviour:
   gamePlayer_list: []
   clientIndex: 0
   isRoom: 1
+  hiders: []
+  seekers: []
   seekerSpawnpoint: {fileID: 719183382977230162, guid: d62f1f6ea93918a4fb56a3b9f438e878, type: 3}
   hiderSpawnpoint: {fileID: 8088152999707955203, guid: 722042b4eea805c4893f4e0c12c7bed7, type: 3}
   seeker_obj: {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
@@ -1581,6 +1583,9 @@ MonoBehaviour:
   - {fileID: 2666114600347996114, guid: 0dcdf8e8b8127064898c262c8b409350, type: 3}
   - {fileID: 7027531385698243166, guid: be6c26163a4783541bdb881c0af21b10, type: 3}
   seeker_count: 1
+  OnPlayerCountChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1189538883
 Transform:
   m_ObjectHideFlags: 0

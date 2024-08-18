@@ -3,6 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+
+public struct Client_Input
+{
+    public float cursor_h;
+    public float cursor_v;
+    public float move_h;
+    public float move_v;
+    public bool is_clicked;
+    public bool jump;
+
+    public Client_Input(float input_cursor_h, float input_cursor_v, float input_move_h, float input_move_v, bool is_clicked, bool jump)
+    {
+        cursor_h = input_cursor_h;
+        cursor_v = input_cursor_v;
+        move_h = input_move_h;
+        move_v = input_move_v;
+        this.is_clicked = is_clicked;
+        this.jump = jump;
+    }
+}
+
 public class Player_Control : NetworkBehaviour
 {
     [SerializeField] private Rigidbody rb;
@@ -10,6 +31,8 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
     [SerializeField] public Animator player_ani;
+    [SerializeField] private NetworkIdentity net_ID;
+
 
     [SerializeField] float move_speed = 5f;
     [SerializeField] float jump_speed = 5f; // 점프에 사용할 힘
@@ -28,6 +51,9 @@ public class Player_Control : NetworkBehaviour
     private Vector3 velocity_v = Vector3.zero;
     private Coroutine jumpCoroutine;
 
+    Client_Input input;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -42,40 +68,70 @@ public class Player_Control : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer)
+        if (isLocalPlayer)
         {
-            return; //You shall not pass!!!
-        }
+            //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
+            input_move_h = Input.GetAxisRaw("Horizontal");
+            input_move_v = Input.GetAxisRaw("Vertical");
+            input_cursor_h = Input.GetAxis("Mouse X");
+            input_cursor_v = Input.GetAxis("Mouse Y");
 
-        //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
-        input_move_h = Input.GetAxisRaw("Horizontal");
-        input_move_v = Input.GetAxisRaw("Vertical");
-        input_cursor_h = Input.GetAxis("Mouse X");
-        input_cursor_v = Input.GetAxis("Mouse Y");
+            if (Input.GetKeyDown(KeyCode.Space) && jumpCoroutine == null)
+            {
+                jumpCoroutine = StartCoroutine(Jump_Co());
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCoroutine == null)
-        {
-            jumpCoroutine = StartCoroutine(Jump_Co());
+
+
+            is_clicked = Input.GetMouseButtonDown(0);
+            if (net_ID != null) Input_CMD(net_ID, input);
+
         }
 
         
-
         Player_MoveAni();
-        is_clicked = Input.GetMouseButtonDown(0);
     }
 
     private void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
-
-        if (is_clicked)
+        if (isLocalPlayer)
         {
-            Morph();
+            if (is_clicked)
+            {
+                Morph();
+            }
+
+            Player_Move(input_move_h, input_move_v, input_jump);
+            Player_Rotate(input_cursor_h, input_cursor_v);
         }
 
-        Player_Move(input_move_h, input_move_v, input_jump);
-        Player_Rotate(input_cursor_h, input_cursor_v);
+        
     }
+
+    [Command]
+    public void Input_CMD(NetworkIdentity net_ID, Client_Input input)
+    {
+        if (net_ID != null && !input.Equals(null)) Input_RPC(net_ID, input);
+    }
+
+    [ClientRpc]
+    public void Input_RPC(NetworkIdentity net_ID, Client_Input input)
+    {
+        if (this.net_ID.netId == net_ID.netId)
+        {
+            input_move_h = input.move_h;
+            input_move_v = input.move_v;
+            input_cursor_h = input.cursor_h;
+            input_cursor_v = input.cursor_v;
+            if (input.jump)
+            {
+                StopCoroutine(Jump_Co());
+                StartCoroutine(Jump_Co());
+            }
+            is_clicked = input.is_clicked;
+        }
+    }
+
 
     private void Player_MoveAni()
     {

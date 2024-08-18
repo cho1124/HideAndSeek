@@ -39,13 +39,13 @@ public class GamePlayer : NetworkBehaviour
     {
 
         room_manager = FindAnyObjectByType<HideAndSeekRoomManager>();
-        CmdGenerateNumber();
+        if(isServer)
+        {
+            CmdGenerateNumber();
+
+        }
         
         AssignPlayerBody(randomNumber);
-
-
-        
-
 
     }
 

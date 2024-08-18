@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System;
+using UnityEngine.Events;
 
 public class HideAndSeekRoomManager : NetworkRoomManager
 {
     public bool isRoom = true;
 
-    private List<GameObject> hiders = new List<GameObject>();
-    private List<GameObject> seekers = new List<GameObject>();
+    [SerializeField] private List<GameObject> hiders = new List<GameObject>();
+    [SerializeField] private List<GameObject> seekers = new List<GameObject>();
 
     [Header("스폰포인트")]
     public Transform seekerSpawnpoint;
@@ -23,6 +24,14 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     [Header("술래 카운트")]
     [SerializeField] private int seeker_count = 1;
     private int member_count;
+
+    
+    //씽크바를 몇개를 쓰는건지 몰겄다 수벌
+    
+
+    public UnityEvent OnPlayerCountChanged;
+
+
 
     public override void OnStartServer()
     {
@@ -111,15 +120,20 @@ public class HideAndSeekRoomManager : NetworkRoomManager
         var playerScript = player.GetComponent<GamePlayer>();
         playerScript.CmdAssignTeam(teamId);
         
+        
 
         if (teamId == 1)
         {
             hiders.Add(player);
+            
         }
         else if (teamId == 2)
         {
             seekers.Add(player);
+            
         }
+
+        OnPlayerCountChanged?.Invoke();
     }
 
     public override void OnRoomServerDisconnect(NetworkConnectionToClient conn)
@@ -132,13 +146,17 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             if (playerScript.teamId == 1)
             {
                 hiders.Remove(player);
+                
             }
             else if (playerScript.teamId == 2)
             {
                 seekers.Remove(player);
+                
             }
 
             base.OnRoomServerDisconnect(conn);
+
+            OnPlayerCountChanged?.Invoke();
         }
     }
 
@@ -146,4 +164,7 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     {
         return teamId == 1 ? hiders.Count : teamId == 2 ? seekers.Count : 0;
     }
+    
+
+
 }

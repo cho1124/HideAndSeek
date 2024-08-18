@@ -18,6 +18,16 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI Timer_UI;
     [SerializeField] private GameObject timerObj;
     [SerializeField] private TextMeshProUGUI HP_UI;
+    [SerializeField] private TextMeshProUGUI hider_text;
+    [SerializeField] private TextMeshProUGUI seeker_text;
+
+    [SyncVar(hook = nameof(OnHiderCountChanged))]
+    public int hiderCount;
+
+    [SyncVar(hook = nameof(OnSeekerCountChanged))]
+    public int seekerCount;
+
+    public HideAndSeekRoomManager roomManager;
 
     private void Awake()
     {
@@ -29,7 +39,8 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
-
+        hider_text = GameObject.Find("Seeker text").GetComponent<TextMeshProUGUI>();
+        seeker_text = GameObject.Find("Hider text").GetComponent<TextMeshProUGUI>();
         timerObj = GameObject.Find("Timer UI");
         if (timerObj != null)
         {
@@ -50,8 +61,22 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
-        
-        InitializeGame();
+        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
+
+
+        if (roomManager != null)
+        {
+            // 플레이어 수 변경 이벤트에 UI 업데이트 메서드 연결
+            hiderCount = roomManager.GetTeamCount(1);
+            seekerCount = roomManager.GetTeamCount(2);
+            roomManager.OnPlayerCountChanged.AddListener(UpdatePlayerCounts);
+        }
+
+
+        if (isServer)
+        {
+            InitializeGame();
+        }
     }
 
     [Server]
@@ -65,7 +90,11 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
-        CheckTimer();
+        if(isServer)
+        {
+
+            CheckTimer();
+        }
     }
 
     [Server]
@@ -101,4 +130,24 @@ public class GameManager : NetworkBehaviour
         Time.timeScale = 0;
         // 추가적인 게임 종료 처리
     }
+
+    private void OnHiderCountChanged(int oldCount, int newCount)
+    {
+        hider_text.text = $"Hiders : {newCount} ";
+        
+    }
+
+    private void OnSeekerCountChanged(int oldCount, int newCount)
+    {
+        seeker_text.text = $"Seekers : {newCount}";
+    }
+
+    private void UpdatePlayerCounts()
+    {
+        hiderCount = roomManager.GetTeamCount(1);
+        seekerCount = roomManager.GetTeamCount(2);
+
+        
+    }
+
 }

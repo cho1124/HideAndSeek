@@ -11,10 +11,23 @@ public class UIManager : MonoBehaviour
 
     private GamePlayer localPlayer;
 
+    public HideAndSeekRoomManager roomManager;
+
+    [SerializeField] private TextMeshProUGUI hider_text;
+    [SerializeField] private TextMeshProUGUI seeker_text;
+
+
     private void Start()
     {
-        Debug.Log("Started!");
-        FindLocalPlayer();
+        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
+
+
+        if (roomManager != null)
+        {
+            // 플레이어 수 변경 이벤트에 UI 업데이트 메서드 연결
+            roomManager.OnPlayerCountChanged.AddListener(UpdatePlayerCounts);
+        }
+        
     }
 
     private void FindLocalPlayer()
@@ -38,5 +51,13 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    private void UpdatePlayerCounts()
+    {
+
+        hider_text.text = $"Hiders : {roomManager.GetTeamCount(1)} ";
+        seeker_text.text = $"Seekers : {roomManager.GetTeamCount(2)}";
+    }
+
 
 }

@@ -32,11 +32,11 @@ public class Animation_Control : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if(player_control != null && !player_control.isLocalPlayer)
-        {
-            //Debug.Log("not local");
-            return;
-        }
+        //if(player_control != null && !player_control.isLocalPlayer)
+        //{
+        //    //Debug.Log("not local");
+        //    return;
+        //}
 
         
     }
