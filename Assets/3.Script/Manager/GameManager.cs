@@ -6,6 +6,9 @@ using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
+
+    public static GameManager instance = null;
+
     [Header("»Â∏ß√≥∏Æ")]
     [SyncVar(hook = nameof(ChangeHookTimer))]
     public float timer = 180f;
@@ -16,11 +19,38 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject timerObj;
     [SerializeField] private TextMeshProUGUI HP_UI;
 
-    
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        timerObj = GameObject.Find("Timer UI");
+        if (timerObj != null)
+        {
+            Timer_UI = timerObj.GetComponent<TextMeshProUGUI>();
+        }
+        else
+        {
+            Debug.LogError("Timer UI object not found!");
+        }
+
+        if (Timer_UI == null)
+        {
+            Debug.LogError("TextMeshProUGUI component not found on Timer UI object!");
+        }
+    }
+
+
+
     private void Start()
     {
-        timerObj = GameObject.Find("Timer UI");
-        Timer_UI = timerObj.GetComponent<TextMeshProUGUI>();
+        
         InitializeGame();
     }
 
