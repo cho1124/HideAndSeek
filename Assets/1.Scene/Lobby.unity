@@ -2480,7 +2480,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: off
+  m_text: ON
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -3423,6 +3423,7 @@ GameObject:
   - component: {fileID: 1893135296}
   - component: {fileID: 1893135295}
   - component: {fileID: 1893135294}
+  - component: {fileID: 1893135297}
   m_Layer: 5
   m_Name: AmbientOcclusion_Btn
   m_TagString: Untagged
@@ -3494,9 +3495,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1893135297}
         m_TargetAssemblyTypeName: 
-        m_MethodName: AmbientOcclusion
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3544,6 +3545,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893135292}
   m_CullTransparentMesh: 0
+--- !u!114 &1893135297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893135292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32b183231d3c4b32b1a55072a784448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1904898151
 GameObject:
   m_ObjectHideFlags: 0
