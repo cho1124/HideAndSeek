@@ -105,7 +105,7 @@ MonoBehaviour:
   player_ani: {fileID: 0}
   net_ID: {fileID: 0}
   move_speed: 5
-  jump_speed: 10
+  jump_speed: 5
   input_cursor_h: 0
   input_cursor_v: 0
   input_move_h: 0
