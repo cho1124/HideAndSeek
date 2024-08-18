@@ -20,6 +20,8 @@ public class Lovely_Hammer : MonoBehaviour
         {
             colliders[i].enabled = false;
         }
+
+        GetComponentInParent<Player_Control>().hand = gameObject;
     }
 
     public void Collider_On() //애니메이션 이벤트에 의해 호출되며 콜라이더 활성화 

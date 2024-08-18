@@ -5,12 +5,12 @@ using Mirror;
 
 public class Player_Control : NetworkBehaviour
 {
-    [SerializeField] private NetworkTeam team;
+    [SerializeField] private GamePlayer player;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
-    [SerializeField] private GameObject hand;
+    public GameObject hand = null;
 
 
     [SerializeField] float move_speed = 5f;
@@ -31,12 +31,10 @@ public class Player_Control : NetworkBehaviour
 
     void Start()
     {
-        team = GetComponent<NetworkTeam>();
+        player = GetComponent<GamePlayer>();
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
         main_camera = GameObject.Find("Main_Camera");
-
-        if (team.teamId == "1") hand = gameObject.transform.Find("Hand").gameObject;
     }
 
     void Update()
@@ -62,13 +60,17 @@ public class Player_Control : NetworkBehaviour
         {
             if (is_clicked)
             {
-                if (team.teamId == "1" && !is_swing)
+                if (player.is_seeker && !is_swing)
                 {
-                    //hand = transform.Find("Hand").gameObject;
+                    Debug.Log("Swing");
                     StopCoroutine(Hammer_Swing_Co());
                     StartCoroutine(Hammer_Swing_Co());
                 }
-                else if (team.teamId == "2") Morph();
+                else if (!player.is_seeker)
+                {
+                    Debug.Log("Morph");
+                    Morph();
+                }
                 else Debug.Log("≥  ππ¿”???");
             }
 
@@ -166,14 +168,15 @@ public class Player_Control : NetworkBehaviour
         while (fixed_count < 25f)
         {
             fixed_count += 1f;
-            hand.transform.localEulerAngles = new Vector3(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
+            hand.transform.localRotation = Quaternion.Euler(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
             yield return wait_for_1_fixed;
         }
 
-        while (fixed_count < 50f)
+        fixed_count = 0f;
+        while (fixed_count < 25f)
         {
             fixed_count += 1f;
-            hand.transform.localEulerAngles = new Vector3(0f, hand.transform.localEulerAngles.y - 90f * fixed_count/25f, hand.transform.localEulerAngles.z - 90f * fixed_count/25f);
+            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count/25f, hand.transform.localRotation.z - 90f * fixed_count/25f);
             yield return wait_for_1_fixed;
         }
 

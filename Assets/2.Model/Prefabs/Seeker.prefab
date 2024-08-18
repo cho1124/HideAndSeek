@@ -3695,7 +3695,7 @@ GameObject:
   - component: {fileID: 9107365570015315522}
   - component: {fileID: 7158155259641056258}
   - component: {fileID: 1844577549648647205}
-  - component: {fileID: 7619925275200587857}
+  - component: {fileID: 5128000036211211517}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -3712,7 +3712,7 @@ Transform:
   m_GameObject: {fileID: 2566238470228548387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: -0.5, y: 0, z: 1}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3760,7 +3760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hammer_collider: {fileID: 2244213476707142532}
   self: {fileID: 0}
---- !u!114 &7619925275200587857
+--- !u!114 &5128000036211211517
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3769,7 +3769,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2566238470228548387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
@@ -11241,7 +11241,7 @@ GameObject:
   - component: {fileID: 8393267294269484239}
   - component: {fileID: 1228303624984646118}
   - component: {fileID: 4093852623905143492}
-  - component: {fileID: 4338634021021539021}
+  - component: {fileID: 7405107211493735256}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -11257,7 +11257,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8320158573433678227}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31598538, y: 0.8681629, z: -0.3596048, w: 0.13088542}
+  m_LocalRotation: {x: 0.1464466, y: 0.8535535, z: -0.35355338, w: 0.35355338}
   m_LocalPosition: {x: 5, y: 0, z: -2.5}
   m_LocalScale: {x: 0.25, y: 5, z: 0.25}
   m_ConstrainProportionsScale: 0
@@ -11267,7 +11267,7 @@ Transform:
   - {fileID: 1851335319330350081}
   - {fileID: 6379646089553605634}
   m_Father: {fileID: 9107365570015315522}
-  m_LocalEulerAnglesHint: {x: 45, y: 180, z: 40}
+  m_LocalEulerAnglesHint: {x: 45, y: 135, z: 0}
 --- !u!33 &8393267294269484239
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11341,7 +11341,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &4338634021021539021
+--- !u!114 &7405107211493735256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11597,8 +11597,8 @@ GameObject:
   - component: {fileID: 7489962983677079645}
   - component: {fileID: 4716086549563225367}
   - component: {fileID: 3900209251695749735}
-  - component: {fileID: 3036914751871796620}
-  - component: {fileID: -3685798357775152888}
+  - component: {fileID: 5598861038898775554}
+  - component: {fileID: 3617119638176350693}
   m_Layer: 0
   m_Name: Seeker
   m_TagString: Untagged
@@ -11695,7 +11695,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3036914751871796620
+--- !u!114 &5598861038898775554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8607683238952810517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 867900473
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
+--- !u!114 &3617119638176350693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11729,23 +11746,6 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &-3685798357775152888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607683238952810517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 867900473
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!1 &8688949486626303863
 GameObject:
   m_ObjectHideFlags: 0
