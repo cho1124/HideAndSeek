@@ -6,6 +6,8 @@ using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
+    public static GameManager instance = null;
+
     [Header("»Â∏ß√≥∏Æ")]
     [SyncVar(hook = nameof(ChangeHookTimer))]
     public float timer = 180f;
@@ -16,7 +18,20 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject timerObj;
     [SerializeField] private TextMeshProUGUI HP_UI;
 
-    
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
     private void Start()
     {
         timerObj = GameObject.Find("Timer UI");
