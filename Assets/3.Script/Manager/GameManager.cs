@@ -144,6 +144,14 @@ public class GameManager : NetworkBehaviour
             timer -= Time.deltaTime;
             //Debug.Log($"Server: Timer updated to {timer}"); // 서버 로그 추가
         }
+
+        if (roomManager.GetTeamCount(1) == 0)
+        {
+            RpcGameOver("Seeker Win!");
+        }
+
+
+
     }
 
     private void ChangeHookTimer(float oldvalue, float newvalue)
