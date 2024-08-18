@@ -11,7 +11,7 @@ public class GameManager : NetworkBehaviour
 
     [Header("흐름처리")]
     [SyncVar(hook = nameof(ChangeHookTimer))]
-    public float timer = 180f;
+    public float timer = 210f;
     private bool isGameOver = false;
 
     [Header("UI")]
@@ -28,6 +28,9 @@ public class GameManager : NetworkBehaviour
     public int seekerCount;
 
     public HideAndSeekRoomManager roomManager;
+    
+    [ShowInInspector]
+    private GameObject wallMaria;
 
     private void Awake()
     {
@@ -84,8 +87,10 @@ public class GameManager : NetworkBehaviour
     {
         // 초기화 로직 (예: 게임 시작 시 플레이어 초기화, 타이머 설정 등)
         Time.timeScale = 1;
-        timer = 180f;
+        timer = 210f;
         isGameOver = false;
+
+        wallMaria = GameObject.Find("WallMaria");
     }
 
     private void Update()
@@ -94,7 +99,26 @@ public class GameManager : NetworkBehaviour
         {
 
             CheckTimer();
+            
         }
+    }
+
+    [Server]
+    private void WallMariaControl()
+    {
+        if(timer <= 180f)
+        {
+            Debug.Log("WallMaria almost down");
+            RpcWallMariaControl();        
+        }
+    }
+
+
+    [ClientRpc]
+    private void RpcWallMariaControl()
+    {
+        wallMaria.SetActive(false);
+        Debug.Log("WallMaria down");
     }
 
     [Server]
