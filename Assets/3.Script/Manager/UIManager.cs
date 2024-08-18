@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,13 +14,6 @@ public class UIManager : MonoBehaviour
 
         hp_text.text = $"{value} ";
         
-    }
-
-    public void LoobyBack()
-    {
-        Debug.Log("로비 이동!");
-
-        SceneManager.LoadScene("Lobby");
     }
 
 }
