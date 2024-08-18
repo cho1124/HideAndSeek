@@ -29,8 +29,11 @@ public class GameManager : NetworkBehaviour
 
     public HideAndSeekRoomManager roomManager;
     
-    [ShowInInspector]
-    private GameObject wallMaria;
+    
+    public GameObject wallMaria;
+
+
+    public bool isWallMariaAlive = true;
 
     private void Awake()
     {
@@ -66,7 +69,7 @@ public class GameManager : NetworkBehaviour
     {
         roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
 
-
+        wallMaria = GameObject.Find("WallMaria");
         if (roomManager != null)
         {
             // 플레이어 수 변경 이벤트에 UI 업데이트 메서드 연결
@@ -90,7 +93,9 @@ public class GameManager : NetworkBehaviour
         timer = 210f;
         isGameOver = false;
 
-        wallMaria = GameObject.Find("WallMaria");
+        isWallMariaAlive = true;
+
+
     }
 
     private void Update()
@@ -99,18 +104,23 @@ public class GameManager : NetworkBehaviour
         {
 
             CheckTimer();
-            WallMariaControl();
+
+            if(isWallMariaAlive)
+                WallMariaControl();
         }
     }
 
     [Server]
     private void WallMariaControl()
     {
-        if(timer <= 180f)
+        if (timer <= 180f)
         {
             Debug.Log("WallMaria almost down");
-            RpcWallMariaControl();        
+            RpcWallMariaControl();
+            isWallMariaAlive = false;
         }
+        else
+            return;
     }
 
 
