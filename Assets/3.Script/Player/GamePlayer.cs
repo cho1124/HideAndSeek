@@ -105,7 +105,6 @@ public class GamePlayer : NetworkBehaviour
             Debug.Log("player_body" + player_body.name);
             transform.position = room_manager.seekerSpawnpoint.position;
             Player_Control playercon = GetComponent<Player_Control>();
-            playercon.player_ani = player_body.GetComponent<Animator>();
 
 
         }

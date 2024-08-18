@@ -1521,7 +1521,7 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 7232667946175925080, guid: c20a5f16d73d9d4458b97da2f8794c0b, type: 3}
-  - {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
+  - {fileID: 0}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -1550,7 +1550,7 @@ MonoBehaviour:
   seekers: []
   seekerSpawnpoint: {fileID: 719183382977230162, guid: d62f1f6ea93918a4fb56a3b9f438e878, type: 3}
   hiderSpawnpoint: {fileID: 8088152999707955203, guid: 722042b4eea805c4893f4e0c12c7bed7, type: 3}
-  seeker_obj: {fileID: 1525218576529477831, guid: 889d24f8fc349cf45b463fb9b13b0143, type: 3}
+  seeker_obj: {fileID: 8607683238952810517, guid: f468c4fe7c7c37a4b991ebd702359c27, type: 3}
   hider_obj:
   - {fileID: 1337530944803012124, guid: 5cbad48e92d4bb1498c66f2e75a7cfd3, type: 3}
   - {fileID: 3258255104939394870, guid: 6de3bb34110c3d44d81c01caee7ff944, type: 3}
