@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System;
 
 public class GamePlayer : NetworkBehaviour
@@ -18,7 +19,8 @@ public class GamePlayer : NetworkBehaviour
     public bool is_dead = false;
     public bool is_seeker = false;
 
-    public event Action<int> OnHealthChanged;
+    
+    public UnityEvent<int> OnHealthChanged;
 
     [SyncVar(hook = nameof(OnTeamChanged))]
     public int teamId;
@@ -26,13 +28,13 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(NumberChanged))]
     int randomNumber;
 
-
-    public GameObject testobj;
-    public Transform testtr;
-
     [Header("플레이어")]
     [SerializeField] private GameObject player_body;
-    
+
+    [Header("UI")]
+    [SerializeField] private UIManager UI_manager;
+
+
     private HideAndSeekRoomManager room_manager;
 
     private void Start()
@@ -45,6 +47,12 @@ public class GamePlayer : NetworkBehaviour
 
         }
         
+        if(isLocalPlayer)
+        {
+            UI_manager = FindAnyObjectByType<UIManager>();
+            OnHealthChanged.AddListener(UI_manager.UpdatePlayerHealth);
+        }
+
         AssignPlayerBody(randomNumber);
 
     }

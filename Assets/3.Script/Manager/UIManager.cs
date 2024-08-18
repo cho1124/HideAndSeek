@@ -4,60 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI hp_text;
 
-    private GamePlayer localPlayer;
-
-    public HideAndSeekRoomManager roomManager;
-
-    [SerializeField] private TextMeshProUGUI hider_text;
-    [SerializeField] private TextMeshProUGUI seeker_text;
-
-
-    private void Start()
+    public void UpdatePlayerHealth(int value)
     {
-        roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
 
-
-        if (roomManager != null)
-        {
-            // «√∑π¿ÃæÓ ºˆ ∫Ø∞Ê ¿Ã∫•∆Æø° UI æ˜µ•¿Ã∆Æ ∏ﬁº≠µÂ ø¨∞·
-            roomManager.OnPlayerCountChanged.AddListener(UpdatePlayerCounts);
-        }
+        hp_text.text = $"{value} ";
         
     }
 
-    private void FindLocalPlayer()
+    public void LoobyBack()
     {
-        // «ˆ¿Á æ¿ø° ¿÷¥¬ ∏µÁ Player ∞¥√º∏¶ ∞Àªˆ
-        GamePlayer[] players = FindObjectsOfType<GamePlayer>();
+        Debug.Log("Î°úÎπÑ Ïù¥Îèô!");
 
-        if(players.Length == 0)
-        {
-            Debug.Log("player count is null!");
-        }
-
-
-        foreach (var player in players)
-        {
-            if (player.isLocalPlayer)
-            {
-                Debug.Log("Found Local Player!");
-                localPlayer = player;
-                break;
-            }
-        }
+        SceneManager.LoadScene("Lobby");
     }
-
-    private void UpdatePlayerCounts()
-    {
-
-        hider_text.text = $"Hiders : {roomManager.GetTeamCount(1)} ";
-        seeker_text.text = $"Seekers : {roomManager.GetTeamCount(2)}";
-    }
-
 
 }

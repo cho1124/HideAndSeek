@@ -48,9 +48,15 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  timer: 180
+  timer: 210
   Timer_UI: {fileID: 0}
-  timerUI: {fileID: 0}
+  timerObj: {fileID: 0}
+  HP_UI: {fileID: 0}
+  hider_text: {fileID: 0}
+  seeker_text: {fileID: 0}
+  hiderCount: 0
+  seekerCount: 0
+  roomManager: {fileID: 0}
 --- !u!114 &8665881983085252177
 MonoBehaviour:
   m_ObjectHideFlags: 0

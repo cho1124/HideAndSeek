@@ -11,7 +11,7 @@ public class GameManager : NetworkBehaviour
 
     [Header("흐름처리")]
     [SyncVar(hook = nameof(ChangeHookTimer))]
-    public float timer = 180f;
+    public float timer = 210f;
     private bool isGameOver = false;
 
     [Header("UI")]
@@ -28,6 +28,12 @@ public class GameManager : NetworkBehaviour
     public int seekerCount;
 
     public HideAndSeekRoomManager roomManager;
+    
+    
+    public GameObject wallMaria;
+
+
+    public bool isWallMariaAlive = true;
 
     private void Awake()
     {
@@ -63,7 +69,7 @@ public class GameManager : NetworkBehaviour
     {
         roomManager = FindAnyObjectByType<HideAndSeekRoomManager>();
 
-
+        wallMaria = GameObject.Find("WallMaria");
         if (roomManager != null)
         {
             // 플레이어 수 변경 이벤트에 UI 업데이트 메서드 연결
@@ -84,8 +90,12 @@ public class GameManager : NetworkBehaviour
     {
         // 초기화 로직 (예: 게임 시작 시 플레이어 초기화, 타이머 설정 등)
         Time.timeScale = 1;
-        timer = 180f;
+        timer = 210f;
         isGameOver = false;
+
+        isWallMariaAlive = true;
+
+
     }
 
     private void Update()
@@ -94,7 +104,31 @@ public class GameManager : NetworkBehaviour
         {
 
             CheckTimer();
+
+            if(isWallMariaAlive)
+                WallMariaControl();
         }
+    }
+
+    [Server]
+    private void WallMariaControl()
+    {
+        if (timer <= 180f)
+        {
+            Debug.Log("WallMaria almost down");
+            RpcWallMariaControl();
+            isWallMariaAlive = false;
+        }
+        else
+            return;
+    }
+
+
+    [ClientRpc]
+    private void RpcWallMariaControl()
+    {
+        wallMaria.SetActive(false);
+        Debug.Log("WallMaria down");
     }
 
     [Server]
@@ -121,6 +155,16 @@ public class GameManager : NetworkBehaviour
     private void UpdateTimerUI(float time)
     {
         Timer_UI.text = ((int)time).ToString(); // 타이머를 정수로 변환하여 텍스트 업데이트
+
+        if(time <= 30f)
+        {
+            Timer_UI.color = Color.red;
+        }
+        else
+        {
+            Timer_UI.color = Color.black;
+        }
+
         //Debug.Log("sync!");
     }
 
