@@ -18,7 +18,7 @@ public class Player_Control : NetworkBehaviour
     public bool is_clicked = false;
     public bool input_jump = false;
     public bool is_jumping = false;
-    public bool is_ground = false;
+    public bool is_ground = true;
     Vector3 last_contact = new Vector3();
 
     Vector3 velocity_h = Vector3.zero;
@@ -85,6 +85,7 @@ public class Player_Control : NetworkBehaviour
         else if (is_ground && !is_jumping)
         {
             velocity_v = Vector3.zero;
+            is_ground = true;
         }
         //그 외에 모든 상황에서는 중력 가속도 적용을 받음
         else velocity_v = Vector3.Lerp(velocity_v, Physics.gravity, Time.deltaTime);
@@ -143,6 +144,7 @@ public class Player_Control : NetworkBehaviour
             }
         }
     }
+
 
     private void OnCollisionExit(Collision collision)
     {
