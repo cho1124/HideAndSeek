@@ -10,7 +10,7 @@ public class Player_Control : NetworkBehaviour
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
-    [SerializeField] private GameObject hand;
+    [SerializeField] public GameObject hand;
 
 
     [SerializeField] float move_speed = 5f;
@@ -28,15 +28,23 @@ public class Player_Control : NetworkBehaviour
     private Vector3 velocity_v = Vector3.zero;
     private Coroutine jumpCoroutine;
 
+    [Header("∆¿ id")]
+    [SerializeField] private int TeamID;
+    [SerializeField] private GamePlayer game_player;
+
 
     void Start()
     {
-        team = GetComponent<NetworkTeam>();
+        game_player = GetComponent<GamePlayer>();
+        TeamID = game_player.teamId;
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
         main_camera = GameObject.Find("Main_Camera");
 
-        if (team.teamId == "1") hand = gameObject.transform.Find("Hand").gameObject;
+        Debug.Log("chid Count : " + transform.childCount);
+
+
+
     }
 
     void Update()
@@ -62,14 +70,14 @@ public class Player_Control : NetworkBehaviour
         {
             if (is_clicked)
             {
-                if (team.teamId == "1" && !is_swing)
+                if (TeamID == 2 && !is_swing)
                 {
                     //hand = transform.Find("Hand").gameObject;
                     StopCoroutine(Hammer_Swing_Co());
                     StartCoroutine(Hammer_Swing_Co());
                 }
-                else if (team.teamId == "2") Morph();
-                else Debug.Log("≥  ππ¿”???");
+                else Morph();
+                
             }
 
             Player_Move(input_move_h, input_move_v, input_jump);
