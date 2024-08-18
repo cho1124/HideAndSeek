@@ -5,12 +5,12 @@ using Mirror;
 
 public class Player_Control : NetworkBehaviour
 {
-    [SerializeField] private GamePlayer player;
+    [SerializeField] private NetworkTeam team;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform anchor_transform;
     [SerializeField] private GameObject player_prefab;
     [SerializeField] private GameObject main_camera;
-    public GameObject hand = null;
+    [SerializeField] public GameObject hand;
 
 
     [SerializeField] float move_speed = 5f;
@@ -28,13 +28,23 @@ public class Player_Control : NetworkBehaviour
     private Vector3 velocity_v = Vector3.zero;
     private Coroutine jumpCoroutine;
 
+    [Header("∆¿ id")]
+    [SerializeField] private int TeamID;
+    [SerializeField] private GamePlayer game_player;
+
 
     void Start()
     {
-        player = GetComponent<GamePlayer>();
+        game_player = GetComponent<GamePlayer>();
+        TeamID = game_player.teamId;
         rb = GetComponent<Rigidbody>();
         anchor_transform = transform.Find("Root_Anchor");
         main_camera = GameObject.Find("Main_Camera");
+
+        Debug.Log("chid Count : " + transform.childCount);
+
+
+
     }
 
     void Update()
@@ -60,18 +70,14 @@ public class Player_Control : NetworkBehaviour
         {
             if (is_clicked)
             {
-                if (player.is_seeker && !is_swing)
+                if (TeamID == 2 && !is_swing)
                 {
-                    Debug.Log("Swing");
+                    //hand = transform.Find("Hand").gameObject;
                     StopCoroutine(Hammer_Swing_Co());
                     StartCoroutine(Hammer_Swing_Co());
                 }
-                else if (!player.is_seeker)
-                {
-                    Debug.Log("Morph");
-                    Morph();
-                }
-                else Debug.Log("≥  ππ¿”???");
+                else Morph();
+                
             }
 
             Player_Move(input_move_h, input_move_v, input_jump);
@@ -168,15 +174,14 @@ public class Player_Control : NetworkBehaviour
         while (fixed_count < 25f)
         {
             fixed_count += 1f;
-            hand.transform.localRotation = Quaternion.Euler(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
+            hand.transform.localEulerAngles = new Vector3(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
             yield return wait_for_1_fixed;
         }
 
-        fixed_count = 0f;
-        while (fixed_count < 25f)
+        while (fixed_count < 50f)
         {
             fixed_count += 1f;
-            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count/25f, hand.transform.localRotation.z - 90f * fixed_count/25f);
+            hand.transform.localEulerAngles = new Vector3(0f, hand.transform.localEulerAngles.y - 90f * fixed_count/25f, hand.transform.localEulerAngles.z - 90f * fixed_count/25f);
             yield return wait_for_1_fixed;
         }
 
