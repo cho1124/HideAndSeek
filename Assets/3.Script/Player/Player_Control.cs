@@ -178,10 +178,11 @@ public class Player_Control : NetworkBehaviour
             yield return wait_for_1_fixed;
         }
 
-        while (fixed_count < 50f)
+        fixed_count = 0f;
+        while (fixed_count < 25f)
         {
             fixed_count += 1f;
-            hand.transform.localEulerAngles = new Vector3(0f, hand.transform.localEulerAngles.y - 90f * fixed_count/25f, hand.transform.localEulerAngles.z - 90f * fixed_count/25f);
+            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count/25f, hand.transform.localRotation.z - 90f * fixed_count/25f);
             yield return wait_for_1_fixed;
         }
 
