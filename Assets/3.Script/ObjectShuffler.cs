@@ -16,7 +16,7 @@ public class ObjectShuffler : NetworkBehaviour {
 
     public GameObject[] objects; // 인스펙터에서 오브젝트를 넣을 수 있도록 배열을 선언
 
-    void Start() {
+    public override void OnStartServer() {
         if (objects == null || objects.Length == 0) {
             Debug.LogWarning("Objects array is null or empty. Shuffling aborted.");
             return;
