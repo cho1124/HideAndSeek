@@ -68,20 +68,39 @@ public class Player_Control : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            if (is_clicked)
-            {
-                if (TeamID == 2 && !is_swing)
-                {
-                    //hand = transform.Find("Hand").gameObject;
-                    StopCoroutine(Hammer_Swing_Co());
-                    StartCoroutine(Hammer_Swing_Co());
-                }
-                else Morph();
-                
-            }
-
             Player_Move(input_move_h, input_move_v, input_jump);
             Player_Rotate(input_cursor_h, input_cursor_v);
+        }
+
+        if (is_clicked)
+        {
+            if (TeamID == 2 && !is_swing)
+            {
+                if (hand != null)
+                {
+                    CmdSwingHammer();  // 서버에 명령을 전달
+                }
+            }
+            else
+            {
+                Morph();
+            }
+        }
+    }
+
+    [Command]
+    void CmdSwingHammer()
+    {
+        RpcSwingHammer();  // 모든 클라이언트에게 브로드캐스트
+    }
+
+    [ClientRpc]
+    void RpcSwingHammer()
+    {
+        if (hand != null && !is_swing)
+        {
+            StopCoroutine(Hammer_Swing_Co());
+            StartCoroutine(Hammer_Swing_Co());
         }
     }
 
