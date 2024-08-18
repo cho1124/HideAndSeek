@@ -13,13 +13,14 @@ public class GameManager : NetworkBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI Timer_UI;
-    [SerializeField] private GameObject timerUI;
+    [SerializeField] private GameObject timerObj;
+    [SerializeField] private TextMeshProUGUI HP_UI;
 
     
     private void Start()
     {
-        timerUI = GameObject.Find("Timer UI");
-        Timer_UI = timerUI.GetComponent<TextMeshProUGUI>();
+        timerObj = GameObject.Find("Timer UI");
+        Timer_UI = timerObj.GetComponent<TextMeshProUGUI>();
         InitializeGame();
     }
 
@@ -48,26 +49,26 @@ public class GameManager : NetworkBehaviour
         else
         {
             timer -= Time.deltaTime;
-            Debug.Log($"Server: Timer updated to {timer}"); // 서버 로그 추가
+            //Debug.Log($"Server: Timer updated to {timer}"); // 서버 로그 추가
         }
     }
 
     private void ChangeHookTimer(float oldvalue, float newvalue)
     {
-        Debug.Log("timer : " + newvalue);
+        //Debug.Log("timer : " + newvalue);
         UpdateTimerUI(newvalue); // 타이머 값이 변경될 때 UI 업데이트
     }
 
     private void UpdateTimerUI(float time)
     {
         Timer_UI.text = ((int)time).ToString(); // 타이머를 정수로 변환하여 텍스트 업데이트
-        Debug.Log("sync!");
+        //Debug.Log("sync!");
     }
 
     private void RpcGameOver(string result)
     {
         Debug.Log(result);
         Time.timeScale = 0;
-        // 추가적인 게임 종료 처리 (예: UI 업데이트)
+        // 추가적인 게임 종료 처리
     }
 }

@@ -36,7 +36,12 @@ public class Player_Control : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return; //You shall not pass!!!
+        if (!isLocalPlayer)
+        {
+            Debug.Log("not local in player Controller");
+            return; //You shall not pass!!!
+        } 
+            
 
         //키보드 및 마우스 입력은 Update에서, 처리는 FixedUpdate에서.
         input_move_h = Input.GetAxisRaw("Horizontal");

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Animation_Control : MonoBehaviour
+public class Animation_Control : NetworkBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Player_Control player_control;
@@ -14,10 +15,17 @@ public class Animation_Control : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player_control = GetComponentInParent<Player_Control>();
+        
     }
 
     private void FixedUpdate()
     {
+        if(player_control != null && !player_control.isLocalPlayer)
+        {
+            Debug.Log("not local");
+            return;
+        }
+
         animator.SetBool("Attack", false);
 
         move_h = Mathf.Lerp(move_h, player_control.input_move_h, 0.1f);

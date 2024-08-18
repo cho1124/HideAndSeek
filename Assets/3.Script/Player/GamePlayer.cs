@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
-
+using System;
 
 public class GamePlayer : NetworkBehaviour
 { 
@@ -12,6 +12,13 @@ public class GamePlayer : NetworkBehaviour
     public static string ip;
     public static string connectToIp;
     public static bool isHost;
+
+    private int hp_max;
+    private int hp_current;
+    public bool is_dead = false;
+    public bool is_seeker = false;
+
+    public event Action<int> OnHealthChanged;
 
     [SyncVar(hook = nameof(OnTeamChanged))]
     public int teamId;
@@ -25,35 +32,16 @@ public class GamePlayer : NetworkBehaviour
 
     [Header("플레이어")]
     [SerializeField] private GameObject player_body;
-
-    [Header("디버깅")]
-    public Text randomtext;
-
+    
     private HideAndSeekRoomManager room_manager;
 
     private void Start()
     {
-        //gameObject.transform.SetParent(GameObject.Find("PlayerList").transform);
-        //GameManager.instance.test_player.Add(gameObject);
-        //
-        //Debug.Log(nickName);
 
         room_manager = FindAnyObjectByType<HideAndSeekRoomManager>();
-
-
-        //if(isServer)
-        //{
-        //
-        //}
-        
-        
         CmdGenerateNumber();
-        //Debug.Log("randomNumber : " + randomNumber);
-        //Initiallize_Player();
-        //Debug.Log("player's team id is " + teamId);
-
-
-        Initiallize_Player();
+        
+        AssignPlayerBody(randomNumber);
 
     }
 
@@ -65,7 +53,7 @@ public class GamePlayer : NetworkBehaviour
     [Server]
     void CmdGenerateNumber()
     {
-        randomNumber = Random.Range(0, room_manager.hider_obj.Count);
+        randomNumber = UnityEngine.Random.Range(0, room_manager.hider_obj.Count);
         RpcSetRandomNumber(randomNumber); // 클라이언트에 값을 전달
         if (isLocalPlayer)
         {
@@ -84,30 +72,36 @@ public class GamePlayer : NetworkBehaviour
         }
     }
 
-    public void Initiallize_Player()
-    {
-        //int randomIndex = Random.Range(0, room_manager.hider_obj.Count);
-        //randomtext.text = randomNumber.ToString();
-        AssignPlayerBody(randomNumber);
-    }
-
-    
     void AssignPlayerBody(int randomIndex)
     {
         if (teamId == 1)
         {
+            hp_current = 5;
+
+            if(isLocalPlayer)
+            {
+                OnHealthChanged?.Invoke(hp_current);
+            }
+
             player_body = Instantiate(room_manager.hider_obj[randomIndex]);
-            gameObject.transform.position = room_manager.hiderSpawnpoint.position;
+            
+            transform.position = room_manager.hiderSpawnpoint.position;
             gameObject.tag = "Player_Hide";
         }
         else
         {
+            hp_current = 100;
+
+            if (isLocalPlayer)
+            {
+                OnHealthChanged?.Invoke(hp_current);
+            }
+
             player_body = Instantiate(room_manager.seeker_obj);
-            gameObject.transform.position = room_manager.seekerSpawnpoint.position;
-            //GetComponent<NetworkAnimator>().animator = player_body.GetComponent<Animator>();
+            Debug.Log("player_body" + player_body.name);
+            transform.position = room_manager.seekerSpawnpoint.position;
+            
         }
-
-
 
         if (player_body == null)
         {
@@ -117,15 +111,10 @@ public class GamePlayer : NetworkBehaviour
         player_body.transform.SetParent(gameObject.transform);
         player_body.transform.localPosition = Vector3.zero;
     }
-
-
     
     public void CmdAssignTeam(int newTeamId)
     {
-        //Debug.Log("assigned!");
         teamId = newTeamId;
-
-        
     }
 
     void OnTeamChanged(int oldTeam, int newTeam)
@@ -137,8 +126,24 @@ public class GamePlayer : NetworkBehaviour
     void NumberChanged(int oldValue, int newvalue)
     {
         randomNumber = newvalue;
-        //print("Random number: " + randomNumber);
-        //Initiallize_Player();
     }
+
+    public void TakeDamage(int damage)
+    {
+        OnHealthChanged?.Invoke(hp_current);
+        hp_current -= damage;
+        if (hp_current <= 0)
+        {
+            Die();
+        }
+
+    }
+
+    public void Die()
+    {
+        is_dead = true;
+    }
+
+
 
 }
