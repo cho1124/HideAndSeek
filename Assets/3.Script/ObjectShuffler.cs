@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ObjectShuffler : MonoBehaviour {
+public class ObjectShuffler : NetworkBehaviour {
     /*
     맵의 다양성? 혹은 플레이어에게 혼란을 주기 위해...
     맵에 놓인 오브젝트들(움직일만한것들, 커다란 집 이런건 아님...)의
@@ -21,6 +22,9 @@ public class ObjectShuffler : MonoBehaviour {
             return;
         }
         ShufflePositions();
+
+        // 셔플된 위치를 클라이언트들에게 동기화
+        RpcUpdatePositions(GetPositions());
     }
 
     void ShufflePositions() {
@@ -41,6 +45,22 @@ public class ObjectShuffler : MonoBehaviour {
         }
 
         // 섞인 위치를 각 오브젝트에 적용
+        for (int i = 0; i < objects.Length; i++) {
+            objects[i].transform.position = positions[i];
+        }
+    }
+
+    Vector3[] GetPositions() {
+        Vector3[] positions = new Vector3[objects.Length];
+        for (int i = 0; i < objects.Length; i++) {
+            positions[i] = objects[i].transform.position;
+        }
+        return positions;
+    }
+
+    [ClientRpc]
+    void RpcUpdatePositions(Vector3[] positions) {
+        // 클라이언트들이 서버에서 받은 위치 정보를 적용
         for (int i = 0; i < objects.Length; i++) {
             objects[i].transform.position = positions[i];
         }
