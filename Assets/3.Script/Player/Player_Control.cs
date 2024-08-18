@@ -44,7 +44,7 @@ public class Player_Control : NetworkBehaviour
         Debug.Log("chid Count : " + transform.childCount);
 
 
-
+        if (TeamID == 1) gameObject.tag = "Player_Hide";
     }
 
     void Update()

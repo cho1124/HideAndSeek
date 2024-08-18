@@ -136,20 +136,17 @@ public class GamePlayer : NetworkBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log(damage);
         OnHealthChanged?.Invoke(hp_current);
         hp_current -= damage;
         if (hp_current <= 0)
         {
             Die();
         }
-
     }
 
     public void Die()
     {
         is_dead = true;
     }
-
-
-
 }

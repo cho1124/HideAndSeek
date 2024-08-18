@@ -41,13 +41,12 @@ public class Lovely_Hammer : MonoBehaviour
 
     private void OnTriggerStay(Collider victim) //Player_Hide 가진 게임 오브젝트고, 본인이 아니며, 이전에 공격받은 적 없다면 해당 오브젝트에 대한 피해처리
     {
-        if (victim.CompareTag("Player_Hide")) {
-            if (victim.gameObject != self && (!victim_dictionary.ContainsKey(victim.gameObject) || !victim_dictionary[victim.gameObject])) {
+        if (victim.CompareTag("Player_Hide") || victim.CompareTag("Changable"))
+        {
+            
+            if (victim.gameObject.GetComponentInParent<GamePlayer>() != null && (!victim_dictionary.ContainsKey(victim.gameObject) || !victim_dictionary[victim.gameObject])) {
                 victim_dictionary[victim.gameObject] = true;
-                //부모한테 보낼지 아니면 여기서 피격 처리할지
-                Debug.Log("요놈잡았다");
-
-              //  플레이어 사망 처리
+                victim.gameObject.GetComponentInParent<GamePlayer>().TakeDamage(10);
             }
         }
     }
