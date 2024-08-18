@@ -43,6 +43,10 @@ public class GamePlayer : NetworkBehaviour
         
         AssignPlayerBody(randomNumber);
 
+
+        
+
+
     }
 
     private void OnConnectedToServer()
@@ -100,7 +104,10 @@ public class GamePlayer : NetworkBehaviour
             player_body = Instantiate(room_manager.seeker_obj);
             Debug.Log("player_body" + player_body.name);
             transform.position = room_manager.seekerSpawnpoint.position;
-            
+            Player_Control playercon = GetComponent<Player_Control>();
+            playercon.player_ani = player_body.GetComponent<Animator>();
+
+
         }
 
         if (player_body == null)

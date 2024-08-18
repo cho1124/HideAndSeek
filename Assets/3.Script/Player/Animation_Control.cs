@@ -34,10 +34,15 @@ public class Animation_Control : NetworkBehaviour
     {
         if(player_control != null && !player_control.isLocalPlayer)
         {
-            Debug.Log("not local");
+            //Debug.Log("not local");
             return;
         }
 
+        
+    }
+
+    private void Player_Move()
+    {
         animator.SetBool("Attack", false);
 
         move_h = Mathf.Lerp(move_h, player_control.input_move_h, 0.1f);
@@ -50,6 +55,7 @@ public class Animation_Control : NetworkBehaviour
 
         animator.SetBool("Attack", player_control.is_clicked);
     }
+
 
     // 애니메이션 이벤트를 통해 호출될 메서드
     public void EnableCollider() {

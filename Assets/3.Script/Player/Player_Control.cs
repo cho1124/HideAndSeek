@@ -40,12 +40,21 @@ public class Player_Control : NetworkBehaviour
     public bool input_jump = false;
     public bool is_jumping = false;
     public bool is_ground = false;
+    private float move_h = 0f;
+    private float move_v = 0f;
     Vector3 last_contact = new Vector3();
 
     Vector3 velocity_h = Vector3.zero;
     Vector3 velocity_v = Vector3.zero;
 
     Client_Input input;
+
+
+    [Header("조영준용 테스트")]
+    [SerializeField] public Animator player_ani;
+
+
+
 
     void Start()
     {
@@ -54,8 +63,12 @@ public class Player_Control : NetworkBehaviour
         main_camera = GameObject.Find("Main_Camera");
         net_ID = GetComponent<NetworkIdentity>();
 
+        
+
         //맨 처음에 지정된 플레이어 모델링으로 시작하고 트랜스폼 초기화해줌
         input = new Client_Input(0f, 0f, 0f, 0f, false, false);
+
+        
     }
 
     void Update()
@@ -73,7 +86,11 @@ public class Player_Control : NetworkBehaviour
             input.jump = Input.GetKeyDown(KeyCode.Space);
 
             if (net_ID != null) Input_CMD(net_ID, input);
+
+            
         }
+
+        Player_MoveAni();
     }
 
     private void FixedUpdate()
@@ -86,6 +103,25 @@ public class Player_Control : NetworkBehaviour
             Morph();
         }
     }
+
+    private void Player_MoveAni()
+    {
+        if (player_ani == null) return;
+
+        player_ani.SetBool("Attack", false);
+
+        move_h = Mathf.Lerp(move_h, input_move_h, 0.1f);
+        move_v = Mathf.Lerp(move_v, input_move_v, 0.1f);
+
+        player_ani.SetFloat("Velocity_X", move_h);
+        player_ani.SetFloat("Velocity_Y", move_v);
+        player_ani.SetBool("Is_Jumping", is_jumping);
+        player_ani.SetBool("Is_Ground", is_ground);
+
+        player_ani.SetBool("Attack", is_clicked);
+    }
+
+
 
     [Command]
     public void Input_CMD(NetworkIdentity net_ID, Client_Input input)

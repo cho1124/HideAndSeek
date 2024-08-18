@@ -110,6 +110,7 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     {
         var playerScript = player.GetComponent<GamePlayer>();
         playerScript.CmdAssignTeam(teamId);
+        
 
         if (teamId == 1)
         {
