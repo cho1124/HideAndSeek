@@ -99,7 +99,7 @@ public class GameManager : NetworkBehaviour
         {
 
             CheckTimer();
-            
+            WallMariaControl();
         }
     }
 
@@ -145,6 +145,16 @@ public class GameManager : NetworkBehaviour
     private void UpdateTimerUI(float time)
     {
         Timer_UI.text = ((int)time).ToString(); // 타이머를 정수로 변환하여 텍스트 업데이트
+
+        if(time <= 30f)
+        {
+            Timer_UI.color = Color.red;
+        }
+        else
+        {
+            Timer_UI.color = Color.black;
+        }
+
         //Debug.Log("sync!");
     }
 
