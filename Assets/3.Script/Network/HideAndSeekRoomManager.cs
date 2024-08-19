@@ -26,12 +26,9 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     private int member_count;
 
     
-    //¾ÅÅ©¹Ù¸¦ ¸î°³¸¦ ¾²´Â°ÇÁö ¸ô°Î´Ù ¼ö¹ú
     
 
     public UnityEvent OnPlayerCountChanged;
-
-
 
     public override void OnStartServer()
     {

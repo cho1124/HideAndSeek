@@ -176,6 +176,8 @@ public class GameManager : NetworkBehaviour
         //Debug.Log("sync!");
     }
 
+
+    [ClientRpc]
     private void RpcGameOver(string result)
     {
         Debug.Log(result);
