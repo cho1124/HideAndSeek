@@ -51,6 +51,18 @@ public class HideAndSeekRoomManager : NetworkRoomManager
         }
     }
 
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        // 기본적으로 플레이어 추가
+        base.OnServerAddPlayer(conn);
+
+        
+        if (numPlayers == 1) // 첫 번째 플레이어라면 (호스트)
+        {
+            GamePlayer.isHost = true;
+        }
+    }
+
     public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
     {
         
@@ -101,6 +113,17 @@ public class HideAndSeekRoomManager : NetworkRoomManager
             }
         }
 
+        //GamePlayer player_game = player.GetComponent<GamePlayer>();
+
+
+        //if(GamePlayer.isHost)
+        //{
+        //    teamId = 2;
+        //   ;
+        //
+
+
+        
         member_count++;
 
         if (teamId == 1)
