@@ -152,7 +152,7 @@ public class Player_Control : NetworkBehaviour
     {
         foreach (var contact in collision.contacts)
         {
-            if (contact.point.y < transform.position.y + 0.1f && !is_jumping)
+            if (contact.point.y < transform.position.y - 1f && !is_jumping)
             {
                 is_ground = true;
                 break;
@@ -162,7 +162,7 @@ public class Player_Control : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.contacts.Length > 0 && collision.contacts[0].point.y < transform.position.y + 0.05f)
+        if (collision.contacts.Length > 0 && collision.contacts[0].point.y < transform.position.y - 1f)
         {
             is_ground = false;
         }
@@ -190,18 +190,18 @@ public class Player_Control : NetworkBehaviour
 
         is_swing = true;
         hand.GetComponent<Lovely_Hammer>().Collider_On();
-        while (fixed_count < 25f)
+        while (fixed_count < 10f)
         {
             fixed_count += 1f;
-            hand.transform.localEulerAngles = new Vector3(0f, 45f * fixed_count / 25f, 45f * fixed_count / 25f);
+            hand.transform.localEulerAngles = new Vector3(0f, 45f * fixed_count * 0.1f, 45f * fixed_count * 0.1f);
             yield return wait_for_1_fixed;
         }
 
         fixed_count = 0f;
-        while (fixed_count < 25f)
+        while (fixed_count < 10f)
         {
             fixed_count += 1f;
-            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count/25f, hand.transform.localRotation.z - 90f * fixed_count/25f);
+            hand.transform.localRotation = Quaternion.Euler(0f, hand.transform.localRotation.y - 90f * fixed_count * 0.1f, hand.transform.localRotation.z - 90f * fixed_count * 0.1f);
             yield return wait_for_1_fixed;
         }
 
