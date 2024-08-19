@@ -41,7 +41,6 @@ public class GamePlayer : NetworkBehaviour
     {
 
         room_manager = FindAnyObjectByType<HideAndSeekRoomManager>();
-
         if(isServer)
         {
             CmdGenerateNumber();
@@ -56,6 +55,11 @@ public class GamePlayer : NetworkBehaviour
 
         AssignPlayerBody(randomNumber);
 
+    }
+
+    private void OnConnectedToServer()
+    {
+        
     }
 
     [Server]
@@ -75,7 +79,7 @@ public class GamePlayer : NetworkBehaviour
         if (isClient)
         {
             randomNumber = generatedNumber;
-            //Debug.Log("randomNumber (Host/Client) : " + randomNumber);
+            Debug.Log("randomNumber (Host/Client) : " + randomNumber);
             //Initiallize_Player(); // 난수가 생성된 후에 플레이어 초기화
         }
     }
@@ -106,7 +110,7 @@ public class GamePlayer : NetworkBehaviour
             }
 
             player_body = Instantiate(room_manager.seeker_obj);
-            //Debug.Log("player_body" + player_body.name);
+            Debug.Log("player_body" + player_body.name);
             transform.position = room_manager.seekerSpawnpoint.position;
             Player_Control playercon = GetComponent<Player_Control>();
             playercon.hand = player_body.transform.Find("Hand").gameObject;
@@ -130,7 +134,7 @@ public class GamePlayer : NetworkBehaviour
     void OnTeamChanged(int oldTeam, int newTeam)
     {
         // 팀 변경에 따른 처리
-        //Debug.Log("team changed");
+        Debug.Log("team changed");
 
     }
     void NumberChanged(int oldValue, int newvalue)
@@ -140,7 +144,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void TakeDamage(int damage)
     {
-        //Debug.Log(damage);
+        Debug.Log(damage);
         OnHealthChanged?.Invoke(hp_current);
         hp_current -= damage;
         if (hp_current <= 0)
