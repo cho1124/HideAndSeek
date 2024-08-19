@@ -110,8 +110,8 @@ public class GamePlayer : NetworkBehaviour
             }
 
             player_body = Instantiate(room_manager.seeker_obj);
-            Debug.Log("player_body" + player_body.name);
             transform.position = room_manager.seekerSpawnpoint.position;
+
             Player_Control playercon = GetComponent<Player_Control>();
             playercon.hand = player_body.transform.Find("Hand").gameObject;
 
@@ -126,19 +126,18 @@ public class GamePlayer : NetworkBehaviour
         player_body.transform.localPosition = Vector3.zero;
     }
     
-    public void CmdAssignTeam(int newTeamId)
+    public void AssignTeam(int newTeamId)
     {
         teamId = newTeamId;
     }
 
     void OnTeamChanged(int oldTeam, int newTeam)
     {
-        // 팀 변경에 따른 처리
-        Debug.Log("team changed");
-
+        //팀 바꾸는 후크용 메서드
     }
     void NumberChanged(int oldValue, int newvalue)
     {
+        //난수 바꾸는 후크용 메서드
         randomNumber = newvalue;
     }
 

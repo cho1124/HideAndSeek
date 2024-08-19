@@ -138,7 +138,7 @@ public class HideAndSeekRoomManager : NetworkRoomManager
     private void AssignToTeam(GameObject player, int teamId)
     {
         var playerScript = player.GetComponent<GamePlayer>();
-        playerScript.CmdAssignTeam(teamId);
+        playerScript.AssignTeam(teamId);
         
         
 

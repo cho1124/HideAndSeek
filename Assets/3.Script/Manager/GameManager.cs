@@ -28,8 +28,6 @@ public class GameManager : NetworkBehaviour
     public int seekerCount;
 
     public HideAndSeekRoomManager roomManager;
-    
-    
     public GameObject wallMaria;
 
 
@@ -62,8 +60,6 @@ public class GameManager : NetworkBehaviour
             Debug.LogError("TextMeshProUGUI component not found on Timer UI object!");
         }
     }
-
-
 
     private void Start()
     {

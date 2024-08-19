@@ -17,11 +17,16 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void LoobyBack()
+    public void LobbyBack()
     {
-        Debug.Log("로비 이동!");
+        //Debug.Log("로비 이동!");
 
         SceneManager.LoadScene("Lobby");
+        GameManager gameManager = FindAnyObjectByType<GameManager>();
+        
+        
+
+
     }
 
 }

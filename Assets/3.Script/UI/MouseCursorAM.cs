@@ -12,10 +12,10 @@ public class MouseCursorAM : MonoBehaviour
     {
         camera_ar.Play("CameraExitAM", 0, 0);
 
-        StartCoroutine(Timer_IE());
+        StartCoroutine(Timer_Co());
     }
 
-    IEnumerator Timer_IE()
+    IEnumerator Timer_Co()
     {
         yield return new WaitForSeconds(2);
 
@@ -23,6 +23,17 @@ public class MouseCursorAM : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
+
+
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#else
+
+Application.Quit();
+
+#endif
+
+
+        
     }
 }
