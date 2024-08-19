@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
 
     public void LoobyBack()
     {
-        //Debug.Log("로비 이동!");
+        Debug.Log("로비 이동!");
 
         SceneManager.LoadScene("Lobby");
     }
