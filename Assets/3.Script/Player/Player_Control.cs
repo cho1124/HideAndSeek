@@ -41,7 +41,7 @@ public class Player_Control : NetworkBehaviour
         anchor_transform = transform.Find("Root_Anchor");
         main_camera = GameObject.Find("Main_Camera");
 
-        Debug.Log("chid Count : " + transform.childCount);
+        //Debug.Log("chid Count : " + transform.childCount);
 
 
         if (TeamID == 1) gameObject.tag = "Player_Hide";

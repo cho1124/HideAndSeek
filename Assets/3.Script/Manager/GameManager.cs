@@ -45,9 +45,11 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+
         hider_text = GameObject.Find("Seeker text").GetComponent<TextMeshProUGUI>();
         seeker_text = GameObject.Find("Hider text").GetComponent<TextMeshProUGUI>();
         timerObj = GameObject.Find("Timer UI");
+
         if (timerObj != null)
         {
             Timer_UI = timerObj.GetComponent<TextMeshProUGUI>();
@@ -62,8 +64,6 @@ public class GameManager : NetworkBehaviour
             Debug.LogError("TextMeshProUGUI component not found on Timer UI object!");
         }
     }
-
-
 
     private void Start()
     {
@@ -115,7 +115,7 @@ public class GameManager : NetworkBehaviour
     {
         if (timer <= 180f)
         {
-            Debug.Log("WallMaria almost down");
+            //Debug.Log("WallMaria almost down");
             RpcWallMariaControl();
             isWallMariaAlive = false;
         }
@@ -128,7 +128,7 @@ public class GameManager : NetworkBehaviour
     private void RpcWallMariaControl()
     {
         wallMaria.SetActive(false);
-        Debug.Log("WallMaria down");
+        //Debug.Log("WallMaria down");
     }
 
     [Server]
@@ -178,7 +178,7 @@ public class GameManager : NetworkBehaviour
 
     private void RpcGameOver(string result)
     {
-        Debug.Log(result);
+        //Debug.Log(result);
         Time.timeScale = 0;
         // 추가적인 게임 종료 처리
     }
