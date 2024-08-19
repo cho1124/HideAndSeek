@@ -145,7 +145,7 @@ public class GameManager : NetworkBehaviour
             //Debug.Log($"Server: Timer updated to {timer}"); // 서버 로그 추가
         }
 
-        if (roomManager.GetTeamCount(1) == 0)
+        if (timer <= 180f && roomManager.GetTeamCount(1) == 0)
         {
             RpcGameOver("Seeker Win!");
         }
