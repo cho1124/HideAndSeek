@@ -2,31 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using UnityEngine.UI;
 using UnityEngine.Events;
-using System;
 
 public class GamePlayer : NetworkBehaviour
-{ 
+{
 
-    public static string nickName;
-    public static string ip;
-    public static string connectToIp;
-    public static bool isHost;
+    [SyncVar] public string nickName;
+    [SyncVar] public string ip;
 
-    private int hp_max;
-    private int hp_current;
     public bool is_dead = false;
     public bool is_seeker = false;
 
-    
-    public UnityEvent<int> OnHealthChanged;
+    // UI 업데이트용 이벤트 (LocalPlayer에서만 리스너 연결)
+    public UnityEvent<int> OnHealthChanged = new UnityEvent<int>();
 
+    [Header("Sync Variables")]
     [SyncVar(hook = nameof(OnTeamChanged))]
     public int teamId;
 
-    [SyncVar(hook = nameof(NumberChanged))]
-    int randomNumber;
+
+    [SyncVar(hook = nameof(OnHealthChangedHook))]
+    private int hp_current;
+
+    [SyncVar(hook = nameof(OnRandomNumberChanged))]
+    private int randomNumber;
 
     [Header("플레이어")]
     [SerializeField] private GameObject player_body;
@@ -34,138 +33,139 @@ public class GamePlayer : NetworkBehaviour
     [Header("UI")]
     [SerializeField] private UIManager UI_manager;
 
-
     private HideAndSeekRoomManager room_manager;
 
-    private void Start()
+
+    public override void OnStartServer()
     {
-
         room_manager = FindAnyObjectByType<HideAndSeekRoomManager>();
-        if(isServer)
-        {
-            CmdGenerateNumber();
 
-        }
-        
-        if(isLocalPlayer)
-        {
-            UI_manager = FindAnyObjectByType<UIManager>();
-            OnHealthChanged.AddListener(UI_manager.UpdatePlayerHealth);
-        }
+
+        randomNumber = UnityEngine.Random.Range(0, room_manager.hider_obj.Count);
+
+        // 팀에 따른 기본 체력 세팅
+        hp_current = (teamId == 1) ? 5 : 100;
+    }
+
+    // 클라이언트에서 객체가 스폰될 때 실행 (모든 클라이언트)
+    public override void OnStartClient()
+    {
+        room_manager = FindAnyObjectByType<HideAndSeekRoomManager>();
+
 
         AssignPlayerBody(randomNumber);
-
     }
 
-    private void OnConnectedToServer()
+    // 로컬 플레이어(본인) 전용 초기화
+    public override void OnStartLocalPlayer()
     {
-        
-    }
+        UI_manager = FindAnyObjectByType<UIManager>();
 
-    [Server]
-    void CmdGenerateNumber()
-    {
-        randomNumber = UnityEngine.Random.Range(0, room_manager.hider_obj.Count);
-        RpcSetRandomNumber(randomNumber); // 클라이언트에 값을 전달
-        if (isLocalPlayer)
+
+        if (UI_manager != null)
         {
-            RpcSetRandomNumber(randomNumber);
+            OnHealthChanged.AddListener(UI_manager.UpdatePlayerHealth);
+            OnHealthChanged?.Invoke(hp_current);
         }
     }
 
-    [ClientRpc]
-    void RpcSetRandomNumber(int generatedNumber)
+    private void AssignPlayerBody(int randomIndex)
     {
-        if (isClient)
-        {
-            randomNumber = generatedNumber;
-            Debug.Log("randomNumber (Host/Client) : " + randomNumber);
-            //Initiallize_Player(); // 난수가 생성된 후에 플레이어 초기화
-        }
-    }
 
-    void AssignPlayerBody(int randomIndex)
-    {
+        if (room_manager == null) return;
+
         if (teamId == 1)
         {
-            hp_current = 5;
-
-            if(isLocalPlayer)
-            {
-                OnHealthChanged?.Invoke(hp_current);
-            }
-
+            is_seeker = false;
             player_body = Instantiate(room_manager.hider_obj[randomIndex]);
-            
             transform.position = room_manager.hiderSpawnpoint.position;
             gameObject.tag = "Player_Hide";
         }
         else
         {
-            hp_current = 100;
-
-            if (isLocalPlayer)
-            {
-                OnHealthChanged?.Invoke(hp_current);
-            }
-
+            is_seeker = true;
             player_body = Instantiate(room_manager.seeker_obj);
             transform.position = room_manager.seekerSpawnpoint.position;
 
             Player_Control playercon = GetComponent<Player_Control>();
-            playercon.hand = player_body.transform.Find("Hand").gameObject;
-
+            if (playercon != null)
+            {
+                playercon.hand = player_body.transform.Find("Hand").gameObject;
+            }
         }
 
         if (player_body == null)
         {
-            Debug.LogError("player body is null");
+            Debug.LogError("Player body instantiation failed.");
+            return;
         }
 
         player_body.transform.SetParent(gameObject.transform);
         player_body.transform.localPosition = Vector3.zero;
     }
-    
-    public void AssignTeam(int newTeamId)
-    {
-        teamId = newTeamId;
-    }
+
+
 
     void OnTeamChanged(int oldTeam, int newTeam)
     {
-        //팀 바꾸는 후크용 메서드
-    }
-    void NumberChanged(int oldValue, int newvalue)
-    {
-        //난수 바꾸는 후크용 메서드
-        randomNumber = newvalue;
+
     }
 
+    void OnRandomNumberChanged(int oldNumber, int newNumber)
+    {
+
+    }
+
+    void OnHealthChangedHook(int oldHealth, int newHealth)
+    {
+        // 체력이 동기화되어 변경될 때마다 로컬 플레이어의 UI 이벤트 발생
+        if (isLocalPlayer)
+        {
+            OnHealthChanged?.Invoke(newHealth);
+        }
+    }
+
+
+    [Server]
     public void TakeDamage(int damage)
     {
-        Debug.Log(damage);
-        OnHealthChanged?.Invoke(hp_current);
-        hp_current -= damage;
+        if (is_dead) return;
+
+        Debug.Log($"서버에서 데미지 연산됨: {damage}");
+        hp_current -= damage; 
+
         if (hp_current <= 0)
         {
             Die();
         }
     }
 
-    public void Die() 
+    [Server]
+    public void Die()
     {
         is_dead = true;
 
-        // 게임 종료 로직 추가
-        if (isLocalPlayer) 
-        {
-            // 빌드된 애플리케이션에서는 종료
-            Application.Quit();
+        // 서버에서 Rpc를 호출하여 모든 클라이언트 화면에서 사망 처리를 하도록 지시
+        RpcHandleDeath();
+    }
 
-    #if UNITY_EDITOR
-            // 유니티 에디터에서는 플레이 모드를 종료
+    [ClientRpc]
+    private void RpcHandleDeath()
+    {
+        // 래그돌 생성이나 사망 애니메이션 등 클라이언트 시각적 처리
+
+        if (isLocalPlayer)
+        {
+
+
+            Debug.Log("Local player has died.");
+
+            // 임시 종료 로직
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-    #endif
+#else
+            Application.Quit();
+#endif
         }
     }
 }
